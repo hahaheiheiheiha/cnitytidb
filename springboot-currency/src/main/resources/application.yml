@@ -1,0 +1,19 @@
+spring:
+  #配置了当项目出错时跳转去的页面
+  error:
+    path: /error
+  servlet:
+    #表示项目名称，不配置时默认/
+    context-path: /zhensuo
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/chinicdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  port: 8520
+  error:
+    include-message: always
+#mybatis:
+#  mapper-locations: classpath*:cn/project/springbootcurrency/mapper/**/*.xml
