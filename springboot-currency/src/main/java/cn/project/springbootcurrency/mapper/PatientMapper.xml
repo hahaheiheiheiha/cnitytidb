@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.project.springbootcurrency.mapper.PatientMapper">
+    <select id="getPatientList" resultType="cn.project.springbootcurrency.pojo.Patient">
+        select * from patient
+        <where>
+            <if test="maxCreationtime!=null and maxCreationtime!=''">
+                and #{maxCreationtime} &gt;= creationtime
+            </if>
+            <if test="minCreationtime!=null and minCreationtime!=''">
+                and #{minCreationtime} &lt;= creationtime
+            </if>
+            <if test="status_id!=0">
+                and status_id = #{status_id}
+            </if>
+            <if test="name!=null and name !=''">
+                and name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="type==1">
+                and date_format(creationtime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+            </if>
+        </where>
+        <if test="page>0 and pagesize>0">
+            limit #{page},#{pagesize}
+        </if>
+    </select>
+    <select id="getGuaHaoByDate" resultType="int">
+        select count(*) from patient
+        <where>
+            <if test="status ==1">
+                <if test="type==1">
+                    and date_format(creationtime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+                </if>
+                <if test="type==2">
+                    and DATE_FORMAT(`creationtime`,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(now(),INTERVAL 1 DAY),'%Y-%m-%d')
+                </if>
+            </if>
+            <if test="status==2">
+                <if test="type==1">
+                    and date_format(updatetime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+                </if>
+                <if test="type==2">
+                    and DATE_FORMAT(`updatetime`,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(now(),INTERVAL 1 DAY),'%Y-%m-%d')
+                </if>
+            </if>
+        </where>
+
+    </select>
+
+</mapper>

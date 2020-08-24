@@ -6,4 +6,7 @@
     <select id="login" parameterType="cn.project.springbootcurrency.pojo.User" resultType="cn.project.springbootcurrency.pojo.User">
         SELECT * FROM `user` WHERE `phone`=#{phone} AND `password`=#{password};
     </select>
+    <update id="updateUserPassword">
+        update user set password = #{password} where id =#{id}
+    </update>
 </mapper>

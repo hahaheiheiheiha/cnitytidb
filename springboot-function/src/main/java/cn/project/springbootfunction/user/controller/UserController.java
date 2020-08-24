@@ -121,4 +121,52 @@ public class UserController {
         }
 
     }
+    @RequestMapping("/updateUserPassword")
+    @ApiOperation(value="修改当前用户登录密码",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "修改当前用户登录密码")
+    public ResponseData<Object> updateUserPassword(
+            @ApiParam(value="token令牌",name="token",required = true)
+            @RequestParam
+                    String token,
+            @ApiParam(value="确认当前用户密码",name="password",required = true)
+            @RequestParam
+                    String password,
+            @ApiParam(value="新的用户密码",name="newPassword",required = true)
+            @RequestParam
+                    String newPassword,
+            @ApiParam(value="确认新的用户密码",name="newPasswords",required = true)
+            @RequestParam
+                    String newPasswords
+    ){
+        ResponseData<Object> responseData = new ResponseData<Object>();
+        try{
+            password = MyMD5Util.MD5(password);
+            System.out.println(password);
+            User user =  (User) redisTemplate.boundHashOps("user:"+token).get(token);
+            if(user.getPassword().equals(password)){
+                if(newPassword.equals(newPasswords)){
+                    newPassword=MyMD5Util.MD5(newPassword);
+                    System.out.println(newPassword);
+                    int id = user.getId();
+                    int count =  userService.updateUserPassword(id,newPassword);
+                    responseData.setStatus(200);
+                    responseData.setMessage("修改成功");
+                    responseData.setData(count);
+                }else{
+                    responseData.setStatus(401);
+                    responseData.setMessage("密码输入不一致");
+                    responseData.setData("");
+                }
+            }else{
+                responseData.setStatus(400);
+                responseData.setMessage("密码不正确");
+                responseData.setData("");
+            }
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
+    }
 }

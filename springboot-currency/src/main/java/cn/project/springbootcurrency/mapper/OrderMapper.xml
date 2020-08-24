@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.project.springbootcurrency.mapper.OrderMapper">
+    <select id="getShouQianByDate" resultType="java.lang.String">
+        select sum(real_price) from `order`
+        <where>
+            <if test="status ==1">
+                 order_state =1
+                <if test="type==1">
+                    and date_format(date_of_charge,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+                </if>
+                <if test="type==2">
+                    and DATE_FORMAT(`date_of_charge`,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(now(),INTERVAL 1 DAY),'%Y-%m-%d')
+                </if>
+            </if>
+            <if test="status==2">
+                 order_state =2
+                <if test="type==1">
+                    and date_format(date_of_charge,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+                </if>
+                <if test="type==2">
+                    and DATE_FORMAT(`date_of_charge`,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(now(),INTERVAL 1 DAY),'%Y-%m-%d')
+                </if>
+            </if>
+        </where>
+
+    </select>
+</mapper>

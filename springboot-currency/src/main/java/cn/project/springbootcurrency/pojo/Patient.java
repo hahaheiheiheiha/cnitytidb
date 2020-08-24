@@ -2,7 +2,7 @@ package cn.project.springbootcurrency.pojo;
 
 import java.sql.Date;
 
-public class Patient implements java.io.Serializable{
+public class Patient implements java.io.Serializable {
     private int id;
     private int age;
     private int outpatient_id;
@@ -10,7 +10,6 @@ public class Patient implements java.io.Serializable{
     private int department_id;
     private int doctor_id;
     private int patients_id;
-    private int vip_id;
     private int marital_id;
     private int province;
     private int city;
@@ -29,8 +28,6 @@ public class Patient implements java.io.Serializable{
     private String workunit;
     private String remarks;
     private String img;
-    private float integral;
-    private float vip_price;
 
     public int getId() {
         return id;
@@ -88,13 +85,6 @@ public class Patient implements java.io.Serializable{
         this.patients_id = patients_id;
     }
 
-    public int getVip_id() {
-        return vip_id;
-    }
-
-    public void setVip_id(int vip_id) {
-        this.vip_id = vip_id;
-    }
 
     public int getMarital_id() {
         return marital_id;
@@ -240,19 +230,4 @@ public class Patient implements java.io.Serializable{
         this.img = img;
     }
 
-    public float getIntegral() {
-        return integral;
-    }
-
-    public void setIntegral(float integral) {
-        this.integral = integral;
-    }
-
-    public float getVip_price() {
-        return vip_price;
-    }
-
-    public void setVip_price(float vip_price) {
-        this.vip_price = vip_price;
-    }
 }
