@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<<<<<<< HEAD
     <parent>
         <artifactId>chinic</artifactId>
         <groupId>cn.project</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+=======
+>>>>>>> 42fbbac... zhensuo
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.project</groupId>
     <artifactId>springboot-currency</artifactId>
@@ -37,11 +40,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<<<<<<< HEAD
 <!--        <dependency>-->
 <!--            <groupId>com.alibaba</groupId>-->
 <!--            <artifactId>druid</artifactId>-->
 <!--            <version>1.1.9</version>-->
 <!--        </dependency>-->
+=======
+>>>>>>> 42fbbac... zhensuo
     </dependencies>
 
     <dependencyManagement>
@@ -71,7 +77,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+<<<<<<< HEAD
                 <version>2.1.0.RELEASE</version>
+=======
+                <version>2.3.0.RELEASE</version>
+>>>>>>> 42fbbac... zhensuo
                 <configuration>
                     <mainClass>cn.project.springbootcurrency.SpringbootCurrencyApplication</mainClass>
                 </configuration>

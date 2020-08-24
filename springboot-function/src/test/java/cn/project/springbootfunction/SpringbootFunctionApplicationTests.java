@@ -1,6 +1,10 @@
 package cn.project.springbootfunction;
 
+<<<<<<< HEAD
 import org.junit.Test;
+=======
+import org.junit.jupiter.api.Test;
+>>>>>>> 42fbbac... zhensuo
 import org.springframework.boot.test.context.SpringBootTest;
 import cn.project.springbootcurrency.pojo.qwe;
 

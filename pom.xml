@@ -21,6 +21,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+<<<<<<< HEAD
         <!--token-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -73,6 +74,8 @@
             <optional>true</optional>
         </dependency>
 
+=======
+>>>>>>> 42fbbac... zhensuo
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -114,6 +117,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+<<<<<<< HEAD
         <!-- swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -141,6 +145,8 @@
 <!--            <artifactId>jedis</artifactId>-->
 <!--            <version>2.1.0</version>-->
 <!--        </dependency>-->
+=======
+>>>>>>> 42fbbac... zhensuo
     </dependencies>
 
     <dependencyManagement>
@@ -170,7 +176,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+<<<<<<< HEAD
                 <version>2.1.0.RELEASE</version>
+=======
+                <version>2.3.0.RELEASE</version>
+>>>>>>> 42fbbac... zhensuo
                 <configuration>
                     <mainClass>cn.project.chinic.ChinicApplication</mainClass>
                 </configuration>
@@ -184,6 +194,7 @@
                 </executions>
             </plugin>
         </plugins>
+<<<<<<< HEAD
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -195,6 +206,8 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+=======
+>>>>>>> 42fbbac... zhensuo
     </build>
 
 </project>
