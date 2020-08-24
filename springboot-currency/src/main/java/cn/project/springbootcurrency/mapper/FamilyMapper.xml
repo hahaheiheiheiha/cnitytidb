@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.project.springbootcurrency.mapper.FamilyMapper">
+    <insert id="insertFamily" parameterType="cn.project.springbootcurrency.pojo.Family" useGeneratedKeys="true" keyProperty="id">
+        insert into family(`name`,`age`,`sex`,`birth`,`phone`,`family_relations`,`createDate`,`createdBy`)
+        value(#{name},#{age},#{sex},#{birth},#{phone},#{family_relations},now(),#{createdBy});
+    </insert>
+</mapper>

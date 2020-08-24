@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-public class    OrderController {
+public class OrderController {
     @Resource
     private OrderService orderService;
     @RequestMapping(value="/selectUpShouQian")

@@ -4,12 +4,7 @@
     <select id="getPatientList" resultType="cn.project.springbootcurrency.pojo.Patient">
         select * from patient
         <where>
-            <if test="maxCreationtime!=null and maxCreationtime!=''">
-                and #{maxCreationtime} &gt;= creationtime
-            </if>
-            <if test="minCreationtime!=null and minCreationtime!=''">
-                and #{minCreationtime} &lt;= creationtime
-            </if>
+
             <if test="status_id!=0">
                 and status_id = #{status_id}
             </if>
@@ -18,6 +13,14 @@
             </if>
             <if test="type==1">
                 and date_format(creationtime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+            </if>
+            <if test="type==2">
+
+                    and  DATE_FORMAT(#{maxCreationtime},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+
+
+                    and DATE_FORMAT(#{minCreationtime},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+
             </if>
         </where>
         <if test="page>0 and pagesize>0">
@@ -45,6 +48,43 @@
             </if>
         </where>
 
+    </select>
+    <resultMap id="patientMap" type="cn.project.springbootcurrency.pojo.Patient">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="sex" property="sex"></result>
+        <result column="age" property="age"></result>
+        <result column="birth" property="birth"></result>
+        <result column="cardnumber" property="cardnumber"></result>
+        <result column="phone" property="phone"></result>
+        <result column="identity" property="identity"></result>
+        <result column="patients_id" property="patients_id"></result>
+        <result column="vip_id" property="vip_id"></result>
+        <result column="nation" property="nation"></result>
+        <result column="marital_id" property="marital_id"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
+        <result column="address" property="address"></result>
+        <result column="education_id" property="education_id"></result>
+        <result column="occupation_id" property="occupation_id"></result>
+        <result column="workunit" property="workunit"></result>
+        <result column="remarks" property="remarks"></result>
+        <collection property="familieList" ofType="cn.project.springbootcurrency.pojo.Family">
+            <id column="fid" property="id"></id>
+            <result column="fname" property="name"></result>
+            <result column="fage" property="age"></result>
+            <result column="fsex" property="sex"></result>
+            <result column="fbirth" property="birth"></result>
+            <result column="fphone" property="phone"></result>
+            <result column="family_relations" property="family_relations"></result>
+            <result column="fcreateDate" property="createDate"></result>
+            <result column="fcreatedBy" property="createdBy"></result>
+        </collection>
+    </resultMap>
+    <select id="getPatientById" resultMap="patientMap">
+        select p.*,f.id fid,f.name fname,f.age fage,f.sex fsex,f.birth fbirth,f.phone fphone,
+        f.family_relations,f.createDate fcreateDate,f.createdBy fcreatedBy
+         from patient p,family f where p.id=#{id} and f.id in (select f_id from patient_family pf where p_id = #{id})
     </select>
 
 </mapper>

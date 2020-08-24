@@ -1,6 +1,7 @@
 package cn.project.springbootcurrency.pojo;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Patient implements java.io.Serializable {
     private int id;
@@ -28,6 +29,33 @@ public class Patient implements java.io.Serializable {
     private String workunit;
     private String remarks;
     private String img;
+    private List<Family> familieList;
+    private int vip_id;
+    private char sex;
+
+    public int getVip_id() {
+        return vip_id;
+    }
+
+    public void setVip_id(int vip_id) {
+        this.vip_id = vip_id;
+    }
+
+    public char getSex() {
+        return sex;
+    }
+
+    public void setSex(char sex) {
+        this.sex = sex;
+    }
+
+    public List<Family> getFamilieList() {
+        return familieList;
+    }
+
+    public void setFamilieList(List<Family> familieList) {
+        this.familieList = familieList;
+    }
 
     public int getId() {
         return id;

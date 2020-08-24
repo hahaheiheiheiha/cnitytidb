@@ -23,7 +23,10 @@ public class PatientServiceImpl implements PatientService{
         return patientMapper.getGuaHaoByDate(status,type);
     }
 
-
+    @Override
+    public Patient getPatientById(int id) {
+        return patientMapper.getPatientById(id);
+    }
 
 
 }

@@ -10,6 +10,33 @@ public class Family implements Serializable {
     private char sex;
     private Date birth;
     private String phone;
+    private int family_relations;
+    private Date createDate;
+    private int createdBy;
+
+    public int getFamily_relations() {
+        return family_relations;
+    }
+
+    public void setFamily_relations(int family_relations) {
+        this.family_relations = family_relations;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public int getId() {
         return id;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,95 @@ public class PatientController {
     private RedisTemplate redisTemplate;
     @Resource
     private PatientService patientService;
+    @RequestMapping(value="/selectHuanZheXinXi")
+    @ApiOperation(value="根据患者id查询患者详情信息",httpMethod = "GET",produces = "application/json",protocols = "HTTP",notes = "根据患者id查询患者详情信息")
+    public ResponseData<Object> selectHuanZheXinXi(
+            @ApiParam(value="患者ID",name="id",required = true)
+            @RequestParam int id
+    ){
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            Patient patient = patientService.getPatientById(id);
+            if(patient!=null){
+                responseData.setStatus(200);
+                responseData.setMessage("查询成功！");
+                responseData.setData(patient);
+            }else{
+                responseData.setStatus(400);
+                responseData.setMessage("查询失败");
+                responseData.setData("输入的患者id不存在");
+            }
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
 
-    @RequestMapping(value="/selectListPaitent")
-    @ApiOperation(value="查询单天待接诊人信息",httpMethod = "GET",produces = "application/json",protocols = "HTTP",notes = "查询单天待接诊人信息")
-    public ResponseData<Object> selectListPaitent(
+    }
+    @RequestMapping(value="/selectTiaoJianPaitent")
+    @ApiOperation(value="根据条件查询病员信息",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "根据条件查询病员信息")
+    public ResponseData<Object> selectTiaoJianPaitent(
+            @ApiParam(value="最早创建时间",name="maxDate",required = true)
+            @RequestParam Date maxDate,
+            @ApiParam(value="最晚创建时间",name="minDate",required = true)
+            @RequestParam Date minDate,
+            @ApiParam(value="接诊状态",required = false,name="status")
+            @RequestParam Integer status,
+            @ApiParam(value="患者姓名",required = false,name="name")
+            @RequestParam String name,
+            @ApiParam(value="第几页",name="page",required = true)
+            @RequestParam Integer page,
+            @ApiParam(value="每页显示条数",name="pageSize",required = true)
+            @RequestParam Integer pageSize
+    ){
+        ResponseData<Object> responseData = new ResponseData<Object>();
+        int statuss = 0;
+        String names ="";
+        try{
+            if(page<1){
+                responseData.setStatus(400);
+                responseData.setMessage("查询失败");
+                responseData.setData("当前页数不能小于1");
+            }
+            if(pageSize<1){
+                responseData.setStatus(401);
+                responseData.setMessage("查询失败");
+                responseData.setData("页面显示条数不能小于1");
+            }
+            if(status!=0 || status!=null){
+                statuss = status;
+            }
+            if(!name.equals("")||name != null){
+                names = name;
+            }
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("page",page);
+            map.put("pageSize",pageSize);
+            map.put("maxCreationtime",minDate);
+            map.put("minCreationtime",maxDate);
+            map.put("name",names);
+            map.put("status_id",statuss);
+            map.put("type",2);
+            List<Patient> patientList = patientService.getPatientList(map);
+            responseData.setStatus(200);
+            responseData.setMessage("查询成功");
+            responseData.setData(patientList);
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return responseData;
+    }
+
+    @RequestMapping(value="/selectListPatient")
+    @ApiOperation(value="查询单天待门诊记录",httpMethod = "GET",produces = "application/json",protocols = "HTTP",notes = "查询单天待门诊记录")
+    public ResponseData<Object> selectListPatient(
             @ApiParam(value="第几页",name="page",required = true)
             @RequestParam
             Integer page,
@@ -45,7 +131,8 @@ public class PatientController {
            map.put("page",page);
            map.put("pageSize",pageSize);
            map.put("maxCreationtime","");
-           map.put("status_id","0");
+           map.put("minCreationtime","");
+           map.put("status_id",0);
            map.put("name","");
            map.put("type",1);
            List<Patient> patientList = patientService.getPatientList(map);
