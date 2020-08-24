@@ -1,6 +1,7 @@
 package cn.project.springbootfunction.user.service;
 
 import cn.project.springbootcurrency.mapper.UserMapper;
+import cn.project.springbootcurrency.pojo.Register;
 import cn.project.springbootcurrency.pojo.User;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateUserPassword(int id, String password) {
         return userMapper.updateUserPassword(id,password);
+    }
+
+    @Override
+    public int register(Register register) {
+        return userMapper.register(register);
+    }
+
+    @Override
+    public int updateUser(User user) {
+        return userMapper.updateUser(user);
+    }
+
+    @Override
+    public int updateRole(User user) {
+        return userMapper.updateRole(user);
     }
 }

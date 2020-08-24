@@ -1,6 +1,5 @@
 package cn.project.springbootcurrency;
 
-<<<<<<< HEAD
 import cn.project.springbootcurrency.mapper.UserMapper;
 import cn.project.springbootcurrency.pojo.User;
 import cn.project.springbootcurrency.vo.MyMD5Util;
@@ -34,22 +33,10 @@ public class SpringbootCurrencyApplicationTests {
         System.out.println(password);
     }
     @Test
-    public void md52(){
+    public void md52() {
         String password = "123456";
         String md5 = "e10adc3949ba59abbe56e057f20f883e";
-        Boolean flag = MyMD5Util.verify(password,md5);
+        Boolean flag = MyMD5Util.verify(password, md5);
         System.out.println(flag);
-
-=======
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class SpringbootCurrencyApplicationTests {
-
-    @Test
-    void contextLoads() {
->>>>>>> 42fbbac... zhensuo
     }
-
 }

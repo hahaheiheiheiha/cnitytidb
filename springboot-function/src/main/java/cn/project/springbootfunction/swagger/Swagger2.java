@@ -14,7 +14,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@ComponentScan(basePackages = {"cn.project.springbootfunction.controller"})
+@ComponentScan(basePackages = {"cn.project.springbootfunction.user.controller"})
 @EnableSwagger2
 @Configuration
 public class Swagger2 extends WebMvcConfigurationSupport {

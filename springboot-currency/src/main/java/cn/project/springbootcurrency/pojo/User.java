@@ -16,6 +16,15 @@ public class User implements java.io.Serializable{
     private int state;
     private int department;
     private String img;
+    private int roleId;//角色id，方便修改个人信息
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
     public String getImg() {
         return img;

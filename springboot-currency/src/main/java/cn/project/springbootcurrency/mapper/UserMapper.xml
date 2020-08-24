@@ -9,4 +9,14 @@
     <update id="updateUserPassword">
         update user set password = #{password} where id =#{id}
     </update>
+    <insert id="register" parameterType="cn.project.springbootcurrency.pojo.Chinic">
+        insert into `chinic`(`name`,`owner`,`phone`) values(#{name},#{owner},#{phone})
+    </insert>
+    <update id="updateUser" parameterType="cn.project.springbootcurrency.pojo.User">
+        UPDATE `user` SET `name`=#{name},`age`=#{age},`sex`=#{sex},`phone`=#{phone},`email`=#{email},
+        `identity`=#{identity},`post`=#{post},`address`=#{address},`department`=#{department} WHERE `id`=#{id}
+    </update>
+    <update id="updateRole" parameterType="cn.project.springbootcurrency.pojo.User">
+        update `user_role` set `r_id`=#{roleId} where `u_id`=#{id};
+    </update>
 </mapper>
