@@ -11,4 +11,5 @@ public interface PatientMapper {
     public List<Patient> getPatientList(Map map);
     public int getGuaHaoByDate(@Param("status") int status,@Param("type") int type);
     public Patient getPatientById(@Param("id") int id);
+    public int updatePatient(Patient patient);
 }

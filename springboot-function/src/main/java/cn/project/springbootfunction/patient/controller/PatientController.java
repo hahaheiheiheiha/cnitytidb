@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -202,6 +203,31 @@ public class PatientController {
             e.printStackTrace();
         }
 
+        return responseData;
+    }
+    @RequestMapping("/updatePatient")
+    @ApiOperation(value="修改病原基本信息",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "修改病原基本信息")
+    public ResponseData<Object> updateUserAndRole(
+            @ApiParam(name="Patient",value="病原实体",required=true)
+            @RequestBody Patient patient
+    ){
+        ResponseData<Object> responseData = new ResponseData<Object>();
+        try{
+            int count=patientService.updatePatient(patient);
+            if (count>0){
+                responseData.setStatus(200);
+                responseData.setMessage("保存成功");
+                responseData.setData(patient);
+            }else{
+                responseData.setStatus(400);
+                responseData.setMessage("保存失败");
+                responseData.setData(patient);
+            }
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+        }
         return responseData;
     }
 }

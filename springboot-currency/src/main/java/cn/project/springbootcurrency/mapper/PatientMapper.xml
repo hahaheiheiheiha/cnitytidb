@@ -86,5 +86,10 @@
         f.family_relations,f.createDate fcreateDate,f.createdBy fcreatedBy
          from patient p,family f where p.id=#{id} and f.id in (select f_id from patient_family pf where p_id = #{id})
     </select>
-
+    <update id="updatePatient" parameterType="cn.project.springbootcurrency.pojo.Patient">
+        UPDATE `patient` SET `name`=#{name},`cardnumber`=#{cardnumber},`age`=#{age},`birth`=#{birth},`sex`=#{sex},`phone`=#{phone},
+        `identity`=#{identity},`patients_id`=#{patients_id},`vip_id`=#{vip_id},`duedate`=#{duedate},
+        `nation`=#{nation},`marital_id`=#{marital_id},`province`=#{province},`city`=#{city},`address`=#{address},`updatetime`=#{updatetime},
+        `education_id`=#{education_id},`occupation_id`=#{occupation_id},`workunit`=#{workunit},`remarks`=#{remarks} WHERE id=#{id};
+    </update>
 </mapper>

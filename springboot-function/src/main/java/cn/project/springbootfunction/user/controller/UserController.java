@@ -79,10 +79,6 @@ public class UserController {
     @ApiOperation(value = "用户登录",httpMethod = "POST",
             protocols = "HTTP", produces = "application/json",
             notes="根据、密码进行统一认证")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(paramType="form",required=true,value="用户名",name="name"),
-//            @ApiImplicitParam(paramType="form",required=true,value="密码",name="password"),
-//    })
     public ResponseData<Object> login(@ApiParam(name="phone",value="手机号码",required=true,defaultValue = "17261305041")
                                     @RequestParam
                                     String phone,
@@ -266,6 +262,34 @@ public class UserController {
                 responseData.setStatus(400);
                 responseData.setMessage("保存失败");
                 responseData.setData(count+"_"+count2);
+            }
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+        }
+        return responseData;
+    }
+    @RequestMapping("/getUserAndRole")
+    @ApiOperation(value="查看个人信息",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "查看个人信息")
+    public ResponseData<Object> getUserAndRole(
+            @ApiParam(value="用户Id",name="id",required = true,defaultValue = "100010")
+            @RequestParam
+                    int id
+    ){
+        ResponseData<Object> responseData = new ResponseData<Object>();
+        try{
+            User user=userService.getUserById(id);
+            String roleName=userService.getRole_NameByUser_Id(id);
+            user.setRoleName(roleName);
+            if(user!=null && !roleName.equals("")){
+                responseData.setStatus(200);
+                responseData.setMessage("查询成功");
+                responseData.setData(user);
+            }else{
+                responseData.setStatus(400);
+                responseData.setMessage("查询失败");
+                responseData.setData(null);
             }
         }catch (Exception e){
             responseData.setStatus(500);

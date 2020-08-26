@@ -3,6 +3,7 @@ package cn.project.springbootfunction.user.service;
 import cn.project.springbootcurrency.mapper.UserMapper;
 import cn.project.springbootcurrency.pojo.Register;
 import cn.project.springbootcurrency.pojo.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +28,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public int register(Register register) {
         return userMapper.register(register);
+    }
+    /**
+     * 查看个人信息
+     */
+    @Override
+    public User getUserById(@Param("id") int id){
+        return userMapper.getUserById(id);
+    }
+    @Override
+    public String getRole_NameByUser_Id(@Param("userId") int userId){
+        return userMapper.getRole_NameByUser_Id(userId);
     }
 
     @Override

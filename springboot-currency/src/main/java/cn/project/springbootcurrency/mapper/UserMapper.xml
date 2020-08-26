@@ -12,6 +12,12 @@
     <insert id="register" parameterType="cn.project.springbootcurrency.pojo.Chinic">
         insert into `chinic`(`name`,`owner`,`phone`) values(#{name},#{owner},#{phone})
     </insert>
+    <select id="getUserById" parameterType="int" resultType="cn.project.springbootcurrency.pojo.User">
+        SELECT * FROM `user` WHERE id=#{id}
+    </select>
+    <select id="getRole_NameByUser_Id" parameterType="int" resultType="String">
+        SELECT `role_name` FROM `role` WHERE `id` IN (SELECT `r_id` FROM `user_role` WHERE `u_id`=#{userId})
+    </select>
     <update id="updateUser" parameterType="cn.project.springbootcurrency.pojo.User">
         UPDATE `user` SET `name`=#{name},`age`=#{age},`sex`=#{sex},`phone`=#{phone},`email`=#{email},
         `identity`=#{identity},`post`=#{post},`address`=#{address},`department`=#{department} WHERE `id`=#{id}

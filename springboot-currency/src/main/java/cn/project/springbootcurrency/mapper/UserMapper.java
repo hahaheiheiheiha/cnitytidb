@@ -19,6 +19,11 @@ public interface UserMapper {
      */
     public int register(Register register);
     /**
+     * 查看个人信息
+     */
+    public User getUserById(@Param("id") int id);
+    public String getRole_NameByUser_Id(@Param("userId") int userId);
+    /**
      * 修改个人信息
      */
     public int updateUser(User user);

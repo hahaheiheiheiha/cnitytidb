@@ -28,5 +28,10 @@ public class PatientServiceImpl implements PatientService{
         return patientMapper.getPatientById(id);
     }
 
+    @Override
+    public int updatePatient(Patient patient) {
+        return patientMapper.updatePatient(patient);
+    }
+
 
 }
