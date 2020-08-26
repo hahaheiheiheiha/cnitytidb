@@ -22,6 +22,15 @@ public class Order implements Serializable {
     private float wechat;
     private float bank_card;
     private Date date_of_charge;
+    private int zhifufangshi;
+
+    public int getZhifufangshi() {
+        return zhifufangshi;
+    }
+
+    public void setZhifufangshi(int zhifufangshi) {
+        this.zhifufangshi = zhifufangshi;
+    }
 
     public int getId() {
         return id;

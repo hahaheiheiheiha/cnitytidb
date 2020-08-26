@@ -28,5 +28,10 @@ public class PatientServiceImpl implements PatientService{
         return patientMapper.getPatientById(id);
     }
 
+    @Override
+    public Patient getPatientOrderById(int id) {
+        return patientMapper.getPatientOrderById(id);
+    }
+
 
 }

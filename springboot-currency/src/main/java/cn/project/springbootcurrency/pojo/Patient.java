@@ -30,6 +30,25 @@ public class Patient implements java.io.Serializable {
     private String remarks;
     private String img;
     private List<Family> familieList;
+    private List<Order> orderList;
+    private float price;
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
     private int vip_id;
     private char sex;
 

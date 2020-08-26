@@ -1,5 +1,6 @@
 package cn.project.springbootfunction.patient.controller;
 
+import cn.project.springbootcurrency.pojo.Order;
 import cn.project.springbootcurrency.pojo.Patient;
 import cn.project.springbootcurrency.pojo.User;
 import cn.project.springbootcurrency.vo.MyMD5Util;
@@ -39,6 +40,39 @@ public class PatientController {
         try{
             Patient patient = patientService.getPatientById(id);
             if(patient!=null){
+                responseData.setStatus(200);
+                responseData.setMessage("查询成功！");
+                responseData.setData(patient);
+            }else{
+                responseData.setStatus(400);
+                responseData.setMessage("查询失败");
+                responseData.setData("输入的患者id不存在");
+            }
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
+
+    }
+    @RequestMapping(value="/selectHuanZheDindan")
+    @ApiOperation(value="根据患者id查询患者订单信息",httpMethod = "GET",produces = "application/json",protocols = "HTTP",notes = "根据患者id查询患者订单信息")
+    public ResponseData<Object> selectHuanZheDindan(
+            @ApiParam(value="患者ID",name="id",required = true)
+            @RequestParam int id
+    ){
+        float price = 0f;
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            Patient patient = patientService.getPatientOrderById(id);
+            if(patient!=null){
+               List<Order> orders= patient.getOrderList();
+               for(Order order : orders){
+                   price += order.getReal_price();
+               }
+               patient.setPrice(price);
                 responseData.setStatus(200);
                 responseData.setMessage("查询成功！");
                 responseData.setData(patient);

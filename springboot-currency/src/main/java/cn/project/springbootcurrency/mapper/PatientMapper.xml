@@ -86,5 +86,23 @@
         f.family_relations,f.createDate fcreateDate,f.createdBy fcreatedBy
          from patient p,family f where p.id=#{id} and f.id in (select f_id from patient_family pf where p_id = #{id})
     </select>
+    <resultMap id="patientOrderMap" type="cn.project.springbootcurrency.pojo.Patient">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <collection property="orderList" ofType="cn.project.springbootcurrency.pojo.Order">
+            <id column="oid" property="id"></id>
+            <result column="order_state" property="order_state"></result>
+            <result column="order_type" property="order_type"></result>
+            <result column="count_price" property="count_price"></result>
+            <result column="real_price" property="real_price"></result>
+            <result column="zhifufangshi" property="zhifufangshi"></result>
+            <result column="date_of_charge" property="date_of_charge"></result>
+        </collection>
+    </resultMap>
+    <select id="getPatientOrderById" resultMap="patientOrderMap">
+         SELECT p.id id, p.name name,o.id oid,o.order_state order_state,o.order_type order_type,o.count_price count_price
+         ,o.real_price real_price,o.zhifufangshi zhifufangshi,o.date_of_charge date_of_charge
+          FROM patient p ,`order` o WHERE p.id = 1 AND o.name_id =p.id
+    </select>
 
 </mapper>
