@@ -17,4 +17,9 @@ public class LabelServiceImpl implements LabelService{
     public List<Label> getLabelByParentId(int parentId) {
         return labelMapper.getLabelByParentId(parentId);
     }
+
+    @Override
+    public Label getLabelById(int id) {
+        return labelMapper.getLabelById(id);
+    }
 }

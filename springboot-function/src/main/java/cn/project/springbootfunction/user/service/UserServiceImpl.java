@@ -6,6 +6,7 @@ import cn.project.springbootcurrency.pojo.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,5 +38,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateRole(User user) {
         return userMapper.updateRole(user);
+    }
+
+    @Override
+    public List<User> getUserListByRoleId(int roleId) {
+        return userMapper.getUserListByRoleId(roleId);
     }
 }

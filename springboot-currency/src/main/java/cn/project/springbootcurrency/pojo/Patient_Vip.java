@@ -3,9 +3,9 @@ package cn.project.springbootcurrency.pojo;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class User_Vip implements Serializable {
+public class Patient_Vip implements Serializable {
     private int id;
-    private int u_id;
+    private int p_id;
     private int v_id;
     private float consumption;
     private float balance;
@@ -23,12 +23,12 @@ public class User_Vip implements Serializable {
         this.id = id;
     }
 
-    public int getU_id() {
-        return u_id;
+    public int getP_id() {
+        return p_id;
     }
 
-    public void setU_id(int u_id) {
-        this.u_id = u_id;
+    public void setP_id(int p_id) {
+        this.p_id = p_id;
     }
 
     public int getV_id() {

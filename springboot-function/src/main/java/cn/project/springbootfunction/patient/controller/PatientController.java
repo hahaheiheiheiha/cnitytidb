@@ -1,18 +1,19 @@
 package cn.project.springbootfunction.patient.controller;
 
-import cn.project.springbootcurrency.pojo.Order;
-import cn.project.springbootcurrency.pojo.Patient;
-import cn.project.springbootcurrency.pojo.User;
-import cn.project.springbootcurrency.vo.MyMD5Util;
-import cn.project.springbootcurrency.vo.ResponseData;
-import cn.project.springbootcurrency.vo.Rise;
+import cn.project.springbootcurrency.pojo.*;
+import cn.project.springbootcurrency.vo.*;
+import cn.project.springbootfunction.label.service.LabelService;
+import cn.project.springbootfunction.order.service.OrderService;
+import cn.project.springbootfunction.p_vip.service.Patient_VipService;
 import cn.project.springbootfunction.patient.service.PatientService;
+import cn.project.springbootfunction.util.KaHao;
+import cn.project.springbootfunction.vip.service.VipService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,17 @@ public class PatientController {
     @Autowired
     private RedisTemplate redisTemplate;
     @Resource
+    private VipService vipService;
+    @Resource
+    private KaHao kaHao;
+    @Resource
     private PatientService patientService;
+    @Resource
+    private Patient_VipService patient_vipService;
+    @Resource
+    private OrderService orderService;
+    @Resource
+    private LabelService labelService;
     @RequestMapping(value="/selectHuanZheXinXi")
     @ApiOperation(value="根据患者id查询患者详情信息",httpMethod = "GET",produces = "application/json",protocols = "HTTP",notes = "根据患者id查询患者详情信息")
     public ResponseData<Object> selectHuanZheXinXi(
@@ -90,6 +101,89 @@ public class PatientController {
         return responseData;
 
     }
+    @RequestMapping("/addPatient")
+    @ApiOperation(value="新增挂号信息",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "对病员表新增数据")
+    public ResponseData<Object> addPatient(
+            @ApiParam(value = "病员表",name = "patient",required = true)
+            @RequestBody PatientVO patient,
+            @ApiParam(value="挂号人员Token令牌",name = "token" ,required = true)
+            @RequestParam String token
+    ){
+
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            User user = (User) redisTemplate.opsForHash().get("user:"+token,token);
+            if(user ==null){
+                responseData.setStatus(400);
+                responseData.setMessage("");
+                responseData.setData("token令牌有误");
+            }else{
+                if(patient.getIdentity()== null || patient.getIdentity().equals("")){
+                    responseData.setStatus(402);
+                    responseData.setMessage("新增失败");
+                    responseData.setData("请输入身份证号！！");
+                }else{
+                    int countByIdentity = patientService.getPatientByIdentity(patient.getIdentity());
+                    if(countByIdentity>0){
+
+                        responseData.setStatus(403);
+                        responseData.setMessage("新增失败");
+                        responseData.setData("已存在该患者信息！！");
+                        return responseData;
+
+                    }
+                    patient.setCardnumber(kaHao.kaHao());
+                    patient.setGuadandanhao(kaHao.dinDan("dindan"));
+                    patient.setDoctor_id(user.getId());
+                    patient.setJiezhenyishen_id(user.getId());
+                    int count = patientService.addPatient(patient);
+                    if(count>0){
+                        Patient_Vip patient_vip = new Patient_Vip();
+                        patient_vip.setP_id(patient.getId());
+                        int count2 =  patient_vipService.addPatientByPatient_id(patient_vip);
+                        patientService.updatePatientVipByV_Id(patient_vip.getId(),patient.getId());
+                        Order order = new Order();
+                        order.setOrder_state(0);
+                        order.setOrder_type(51);
+                        order.setOrder_id(patient.getGuadandanhao());
+                        order.setName_id(patient.getId());
+                        order.setDepartment(patient.getDepartment_id());
+                        order.setDoctor_id(patient.getJiezhenyishen_id());
+                        float a  =Float.valueOf(labelService.getLabelById(patient.getGuahaoleixing()).getValue());
+                        float b  =Float.valueOf(labelService.getLabelById(patient.getZhenliaofei()).getValue());
+                        float c = a+b;
+                        order.setCount_price(c);
+                        float discount=  vipService.getVipByP_id(patient.getId()).getDiscount();
+                        order.setReal_price(c*discount);
+                        order.setMedical_insurance(c*discount);
+                        order.setZhifujine(order.getReal_price()-order.getMedical_insurance());
+                        int d = orderService.addOrderByPatient(order);
+                        if(d>0){
+                            responseData.setStatus(200);
+                            responseData.setMessage("新增成功");
+                            responseData.setData(count);
+                        }else{
+                            responseData.setStatus(200);
+                            responseData.setMessage("新增失败");
+                            responseData.setData("追加订单失败！");
+                        }
+
+                    }else{
+                        responseData.setStatus(401);
+                        responseData.setMessage("新增失败");
+                        responseData.setData("发送异常");
+                    }
+                }
+
+            }
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
+    }
     @RequestMapping(value="/selectTiaoJianPaitent")
     @ApiOperation(value="根据条件查询病员信息",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "根据条件查询病员信息")
     public ResponseData<Object> selectTiaoJianPaitent(
@@ -114,11 +208,13 @@ public class PatientController {
                 responseData.setStatus(400);
                 responseData.setMessage("查询失败");
                 responseData.setData("当前页数不能小于1");
+                return responseData;
             }
             if(pageSize<1){
                 responseData.setStatus(401);
                 responseData.setMessage("查询失败");
                 responseData.setData("页面显示条数不能小于1");
+                return responseData;
             }
             if(status!=0 || status!=null){
                 statuss = status;
@@ -126,7 +222,7 @@ public class PatientController {
             if(!name.equals("")||name != null){
                 names = name;
             }
-
+            page = (page-1)*pageSize;
             Map<String,Object> map = new HashMap<>();
             map.put("page",page);
             map.put("pageSize",pageSize);
@@ -148,7 +244,26 @@ public class PatientController {
 
         return responseData;
     }
-
+    @RequestMapping(value = "/selectPatientListVo")
+    @ApiOperation(value = "根据条件查询挂号记录",httpMethod = "POST",protocols = "HTTP",produces = "application/json",notes = "根据条件查询挂号记")
+    public ResponseData<Object> selectPatientListVo(
+            @ApiParam(value = "条件查询实体类",name = "patientsVO",required = true)
+            @RequestBody PatientsVO patientsVO
+            ){
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            List<PatientListVO> patientListVOS = patientService.getPatientListVoByPatientsVo(patientsVO);
+            responseData.setStatus(200);
+            responseData.setMessage("查询成功");
+            responseData.setData(patientListVOS);
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
+    }
     @RequestMapping(value="/selectListPatient")
     @ApiOperation(value="查询单天待门诊记录",httpMethod = "GET",produces = "application/json",protocols = "HTTP",notes = "查询单天待门诊记录")
     public ResponseData<Object> selectListPatient(

@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @Api(value = "用户管理控制器类")
@@ -53,7 +55,7 @@ public class UserController {
                                        String token){
         ResponseData<Object> responseData=new ResponseData<Object>();
         try{
-            User user = (User)redisTemplate.boundHashOps("user:"+token).get(token);
+            User user =  (User) redisTemplate.opsForHash().get("user:"+token,token);
             if(user!=null){
                 redisTemplate.boundHashOps("1:"+token).delete(token);
                 responseData.setStatus(200);
@@ -109,7 +111,8 @@ public class UserController {
                 responseData.setMessage("登录成功");
                 Map<String ,Object> map = new HashMap<>();
                 map.put("token",token);
-                redisTemplate.boundHashOps("user:"+token).put(token,user2);
+                redisTemplate.opsForHash().put("user:"+token,token,user2);
+                redisTemplate.expire("user:"+token,3000, TimeUnit.SECONDS);
 
                 responseData.setData(map);
             }else{
@@ -147,7 +150,7 @@ public class UserController {
         try{
             password = MyMD5Util.MD5(password);
             System.out.println(password);
-            User user =  (User) redisTemplate.boundHashOps("user:"+token).get(token);
+            User user =  (User) redisTemplate.opsForHash().get("user:"+token,token);
             if(user !=null){
                 if(user.getPassword().equals(password)){
                     if(newPassword.equals(newPasswords)){
@@ -155,9 +158,17 @@ public class UserController {
                         System.out.println(newPassword);
                         int id = user.getId();
                         int count =  userService.updateUserPassword(id,newPassword);
-                        responseData.setStatus(200);
-                        responseData.setMessage("修改成功");
-                        responseData.setData(count);
+                        if(count>0){
+                            redisTemplate.opsForHash().delete("user:"+token,token);
+                            responseData.setStatus(200);
+                            responseData.setMessage("修改成功,请重新登录");
+                            responseData.setData(count);
+                        }else{
+                            responseData.setStatus(200);
+                            responseData.setMessage("修改失败");
+                            responseData.setData("");
+                        }
+
                     }else{
                         responseData.setStatus(401);
                         responseData.setMessage("密码输入不一致");
@@ -183,7 +194,7 @@ public class UserController {
         return responseData;
     }
     @RequestMapping("/SendVerificationCode")
-    @ApiOperation(value="发送验证码",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "发送验证码")
+    @ApiOperation(value="发送验证码",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "发送验证码，有效期5分钟")
     public ResponseData<Object> register(
             @ApiParam(value="号码",name="phone",required = true,defaultValue = "18674909214")
             @RequestParam
@@ -197,7 +208,9 @@ public class UserController {
                 String code =random.nextInt(10000)+"";
                 System.out.println(code);
                 smsService.sms(phone,code);
-                redisTemplate.boundHashOps("yzm:"+phone).put(phone,code);
+                redisTemplate.opsForHash().put("yzm:"+phone,phone,code);
+                redisTemplate.expire("yzm:"+phone,300, TimeUnit.SECONDS);
+
                 responseData.setStatus(200);
                 responseData.setMessage("发送成功");
                 responseData.setData(null);
@@ -222,7 +235,7 @@ public class UserController {
     ){
         ResponseData<Object> responseData = new ResponseData<Object>();
         try{
-            String verification2=String.valueOf(redisTemplate.boundHashOps("yzm:"+register.getPhone()).get(register.getPhone()));
+            String verification2=String.valueOf(redisTemplate.opsForHash().get("yzm:"+register.getPhone(),register.getPhone()));
             if (register.getVerification().equals(verification2)){
                 int count=userService.register(register);
                 if(count>0){
@@ -271,6 +284,34 @@ public class UserController {
             responseData.setStatus(500);
             responseData.setMessage("出现异常");
             responseData.setData(e.getMessage());
+        }
+        return responseData;
+    }
+    @RequestMapping(value="/selectUserRole")
+    @ApiOperation(value="根据角色ID查询拥有该角色的所有用户信息",produces = "application/json",protocols = "HTTP",httpMethod = "GET"
+            ,notes = "1.管理员，2.医生，3.护士，4.专家，5.前台，6.财务")
+    public ResponseData<Object> selectUserRole(
+            @ApiParam(value="角色Id",name = "role_id",required = true)
+            @RequestParam int role_id
+    ){
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            if(role_id<1){
+                responseData.setStatus(400);
+                responseData.setMessage("查询失败");
+                responseData.setData("角色Id不正确！");
+            }else{
+                List<User> users = userService.getUserListByRoleId(role_id);
+                responseData.setStatus(200);
+                responseData.setMessage("查询成功");
+                responseData.setData(users);
+            }
+
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
         }
         return responseData;
     }

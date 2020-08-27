@@ -16,13 +16,27 @@ public class Order implements Serializable {
     private float discount;
     private float real_price;
     private float medical_insurance;
-    private float membership_card;
-    private float cash;
-    private float alipay;
-    private float wechat;
-    private float bank_card;
+
     private Date date_of_charge;
     private int zhifufangshi;
+    private float labelMapper;
+    private float zhifujine;
+
+    public float getZhifujine() {
+        return zhifujine;
+    }
+
+    public void setZhifujine(float zhifujine) {
+        this.zhifujine = zhifujine;
+    }
+
+    public float getLabelMapper() {
+        return labelMapper;
+    }
+
+    public void setLabelMapper(float labelMapper) {
+        this.labelMapper = labelMapper;
+    }
 
     public int getZhifufangshi() {
         return zhifufangshi;
@@ -125,48 +139,15 @@ public class Order implements Serializable {
     }
 
     public void setMedical_insurance(float medical_insurance) {
-        this.medical_insurance = medical_insurance;
+        if(medical_insurance<=6000){
+            this.medical_insurance = (float)(medical_insurance*0.6);
+        }else{
+            this.medical_insurance = (float)(medical_insurance*0.8);
+        }
+
     }
 
-    public float getMembership_card() {
-        return membership_card;
-    }
 
-    public void setMembership_card(float membership_card) {
-        this.membership_card = membership_card;
-    }
-
-    public float getCash() {
-        return cash;
-    }
-
-    public void setCash(float cash) {
-        this.cash = cash;
-    }
-
-    public float getAlipay() {
-        return alipay;
-    }
-
-    public void setAlipay(float alipay) {
-        this.alipay = alipay;
-    }
-
-    public float getWechat() {
-        return wechat;
-    }
-
-    public void setWechat(float wechat) {
-        this.wechat = wechat;
-    }
-
-    public float getBank_card() {
-        return bank_card;
-    }
-
-    public void setBank_card(float bank_card) {
-        this.bank_card = bank_card;
-    }
 
     public Date getDate_of_charge() {
         return date_of_charge;

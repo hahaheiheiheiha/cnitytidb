@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface LabelService {
     public List<Label> getLabelByParentId(@Param("parentId") int parentId);
-
+    public Label getLabelById(@Param("id") int id);
 }

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages ={"cn.project.springbootfunction","cn.project.springbootcurrency"} )
+@ComponentScan(basePackages ={"cn.project.springbootcurrency","cn.project.springbootfunction"} )
 public class SpringbootFunctionApplication {
 
     public static void main(String[] args) {

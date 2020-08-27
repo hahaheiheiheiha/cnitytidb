@@ -9,4 +9,5 @@ import java.util.List;
 @Mapper
 public interface LabelMapper {
     public List<Label> getLabelByParentId(@Param("parentId") int parentId);
+    public Label getLabelById(@Param("id") int id);
 }

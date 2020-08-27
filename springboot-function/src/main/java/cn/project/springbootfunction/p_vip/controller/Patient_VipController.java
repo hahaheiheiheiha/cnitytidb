@@ -1,8 +1,8 @@
-package cn.project.springbootfunction.user_vip.controller;
+package cn.project.springbootfunction.p_vip.controller;
 
 import cn.project.springbootcurrency.vo.ResponseData;
 import cn.project.springbootcurrency.vo.Rise;
-import cn.project.springbootfunction.user_vip.service.User_VipService;
+import cn.project.springbootfunction.p_vip.service.Patient_VipService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,9 +12,9 @@ import javax.annotation.Resource;
 
 @RestController
 @Api(value = "会员管理控制器类")
-public class User_VipController {
+public class Patient_VipController {
     @Resource
-    private User_VipService user_vipService;
+    private Patient_VipService patient_vipService;
     @RequestMapping(value="/selectUpHuiYuan")
     @ApiOperation(value="查询当天新增会员人数",httpMethod = "GET",protocols = "HTTP",produces = "applicaion/json",notes = "根据当前时间查询会员人数")
     public ResponseData<Object> selectUpHuiYuan(){
@@ -23,9 +23,9 @@ public class User_VipController {
 
             int type =1;
             Rise rise = new Rise();
-            int count = user_vipService.getCountUserVipByDate(type);
+            int count = patient_vipService.getCountUserVipByDate(type);
             type=2;
-            int count2 = user_vipService.getCountUserVipByDate(type);
+            int count2 = patient_vipService.getCountUserVipByDate(type);
             rise.setCount(count);
             rise.setName("新增会员");
             rise.setType("人");

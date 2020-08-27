@@ -104,5 +104,42 @@
          ,o.real_price real_price,o.zhifufangshi zhifufangshi,o.date_of_charge date_of_charge
           FROM patient p ,`order` o WHERE p.id = 1 AND o.name_id =p.id
     </select>
+    <insert id="addPatient" parameterType="cn.project.springbootcurrency.vo.PatientVO" useGeneratedKeys="true" keyProperty="id">
+        insert into patient(name,cardnumber,age,sex,phone,identity,province,city,address,remarks,guadandanhao,department_id
+        ,jiezhenleixing,jiezhenyishen_id,creationtime,updatetime,doctor_id,guahaoleixing,zhenliaofei,birth)
+        value(#{name},#{cardnumber},#{age},#{sex},#{phone},#{identity},#{province},#{city},
+        #{address},#{remarks},#{guadandanhao},#{department_id},#{jiezhenleixing},#{jiezhenyishen_id}
+        ,now(),now(),#{doctor_id},#{guahaoleixing},#{zhenliaofei},#{birth})
+    </insert>
+    <select id="getPatientByIdentity" resultType="int">
+        select count(*) from patient where identity = #{identity} and status_id !=10
+    </select>
+    <update id="updatePatientVipByV_Id">
+        update patient set vip_id = #{v_id} where id = #{id}
+    </update>
+    <select id="getPatientListVoByPatientsVo" resultType="cn.project.springbootcurrency.vo.PatientListVO">
+        SELECT p.name `name` ,p.id `id` ,p.guadandanhao `guadandanhao` ,p.age `age` ,p.sex `sex` ,
+        p.phone `phone` ,p.department_id `department_id` ,p.jiezhenyishen_id `user_id` ,p.creationtime `creationtime` ,p.status_id `status_id` ,
+        (SELECT SUM(count_price) FROM `order` o WHERE p.id = o.name_id ) count_price
+        ,(SELECT SUM(real_price) FROM `order` o WHERE p.id = o.name_id ) real_price FROM patient p
+        <where>
+            status_id = #{status_id}
+            <if test="department_id!=0">
+                and department_id =#{department_id}
+            </if>
+            <if test="user_id!=0">
+                and jiezhenyishen_id=#{user_id}
+            </if>
+            and  DATE_FORMAT(#{maxCreateDate},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+            and DATE_FORMAT(#{minCreateDate},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+            <if test="name!='' and name!=null">
+                and name like concat("%",#{name},"%")
+            </if>
 
+        </where>
+        order by id desc
+        <if test="page>0 and pagesize>0">
+            limit #{page},#{pagesize}
+        </if>
+    </select>
 </mapper>

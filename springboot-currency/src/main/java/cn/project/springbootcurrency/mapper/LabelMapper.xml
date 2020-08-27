@@ -4,5 +4,7 @@
     <select id="getLabelByParentId" resultType="cn.project.springbootcurrency.pojo.Label">
         select * from chinic_label_dic where parentId =#{parentId}
     </select>
-
+    <select id="getLabelById" resultType="cn.project.springbootcurrency.pojo.Label">
+        select * from chinic_label_dic where id =#{id}
+    </select>
 </mapper>
