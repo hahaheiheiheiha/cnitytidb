@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@ComponentScan(basePackages ={"cn.project.springbootfunction","cn.project.springbootcurrency"} )
+@ComponentScan(basePackages ={"cn.project.springbootcurrency","cn.project.springbootfunction"} )
 public class SpringbootFunctionApplication {
 
     public static void main(String[] args) {

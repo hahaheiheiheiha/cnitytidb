@@ -6,6 +6,8 @@ import cn.project.springbootcurrency.vo.ResponseData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
     /**
@@ -28,4 +30,8 @@ public interface UserMapper {
      */
     public int updateUser(User user);
     public int updateRole(User user);
+    /**
+     * 查询拥有某权限的用户
+     */
+    public List<User> getUserListByRoleId(@Param("r_id") int roleId);
 }

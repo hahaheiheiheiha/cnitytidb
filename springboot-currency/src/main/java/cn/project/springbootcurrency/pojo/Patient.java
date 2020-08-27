@@ -30,8 +30,82 @@ public class Patient implements java.io.Serializable {
     private String remarks;
     private String img;
     private List<Family> familieList;
+    private List<Order> orderList;
+    private float price;
     private int vip_id;
+    private int jiezhenleixing;
+    private  String guadandanhao;
+    private int jiezhenyishen_id;
+    private int guahaoleixing;
+    private int zhenliaofei;
     private char sex;
+    private int yibaoka;
+
+    public int getYibaoka() {
+        return yibaoka;
+    }
+
+    public void setYibaoka(int yibaoka) {
+        this.yibaoka = yibaoka;
+    }
+
+    public int getJiezhenleixing() {
+        return jiezhenleixing;
+    }
+
+    public void setJiezhenleixing(int jiezhenleixing) {
+        this.jiezhenleixing = jiezhenleixing;
+    }
+
+    public String getGuadandanhao() {
+        return guadandanhao;
+    }
+
+    public void setGuadandanhao(String guadandanhao) {
+        this.guadandanhao = guadandanhao;
+    }
+
+    public int getJiezhenyishen_id() {
+        return jiezhenyishen_id;
+    }
+
+    public void setJiezhenyishen_id(int jiezhenyishen_id) {
+        this.jiezhenyishen_id = jiezhenyishen_id;
+    }
+
+    public int getGuahaoleixing() {
+        return guahaoleixing;
+    }
+
+    public void setGuahaoleixing(int guahaoleixing) {
+        this.guahaoleixing = guahaoleixing;
+    }
+
+    public int getZhenliaofei() {
+        return zhenliaofei;
+    }
+
+    public void setZhenliaofei(int zhenliaofei) {
+        this.zhenliaofei = zhenliaofei;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
+
 
     public int getVip_id() {
         return vip_id;

@@ -25,4 +25,8 @@
         </where>
 
     </select>
+    <insert id="addOrderByPatient">
+        INSERT INTO `order`(order_state,order_type,order_id,name_id,department,doctor_id,count_price,discount,real_price,medical_insurance)
+VALUES(#{order_state},#{order_type},#{order_id},#{name_id},#{department},#{doctor_id},#{count_price},#{discount},#{real_price},#{medical_insurance})
+    </insert>
 </mapper>

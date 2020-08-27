@@ -25,4 +25,7 @@
     <update id="updateRole" parameterType="cn.project.springbootcurrency.pojo.User">
         update `user_role` set `r_id`=#{roleId} where `u_id`=#{id};
     </update>
+    <select id="getUserListByRoleId" resultType="cn.project.springbootcurrency.pojo.User">
+        select * from user where id in (select u_id from user_role where r_id = #{r_id})
+    </select>
 </mapper>

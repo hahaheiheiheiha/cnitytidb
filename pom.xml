@@ -93,6 +93,7 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+
         </dependency>
         <!--spring-test测试=-->
         <dependency>
