@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -113,6 +114,44 @@ public class DrugController {
             }else{
                 responseData.setStatus(402);
                 responseData.setMessage("查询失败，没有数据");
+                responseData.setData("");
+            }
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
+    }
+    @RequestMapping(value="/insertPrescription_drug")
+    @ApiOperation(value = "增加处方(里面有药品)",produces = "application/json",protocols = "HTTP",httpMethod = "POST",notes ="增加处方(里面有药品)" )
+    public ResponseData<Object> insertPrescription(
+            @ApiParam(name="patient_id",value="患者id",required = true)
+            @RequestParam(value="patient_id",defaultValue="1") int patient_id,
+            @ApiParam(name="drugList",value="药品集合",required = true)
+            @RequestBody List<Drug> drugList
+    ){
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            Patient patient=new Patient();
+            patient.setId(patient_id);
+            int count=drugService.insertPrescription(patient);
+            Boolean flag=false;
+            if (count>0){
+                for (Drug drug:drugList) {
+                    System.out.println(drug.getId());
+                    drugService.insertPrescription_drug(drug.getDrug_c_w(),drug.getId(),patient.getId());
+                }
+                flag=true;
+            }
+            if(flag){
+                responseData.setStatus(202);
+                responseData.setMessage("保存成功");
+                responseData.setData("");
+            }else{
+                responseData.setStatus(402);
+                responseData.setMessage("保存失败");
                 responseData.setData("");
             }
         }catch (Exception e){

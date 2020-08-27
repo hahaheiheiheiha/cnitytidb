@@ -2,6 +2,7 @@ package cn.project.springbootcurrency.mapper;
 
 import cn.project.springbootcurrency.pojo.Drug;
 import cn.project.springbootcurrency.pojo.Label;
+import cn.project.springbootcurrency.pojo.Patient;
 import cn.project.springbootcurrency.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,4 +29,9 @@ public interface DrugMapper {
     public List<Drug> getDrugByDrug_c_wAndCommon_nameAndPinyincode(@Param("drug_c_w") int drug_c_w,
                                                                    @Param("common_name") String common_name,
                                                                    @Param("pinyincode") String pinyincode);
+    /**
+     * 保存增加处方
+     */
+    public int insertPrescription(Patient patient);
+    public int insertPrescription_drug(@Param("type") int type,@Param("drug_id") int drug_id,@Param("prescription_id") int prescription_id);
 }

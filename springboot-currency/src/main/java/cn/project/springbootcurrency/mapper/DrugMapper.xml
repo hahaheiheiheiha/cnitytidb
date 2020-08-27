@@ -15,4 +15,10 @@
     <select id="getDrugByDrug_c_wAndCommon_nameAndPinyincode" resultType="cn.project.springbootcurrency.pojo.Drug">
         SELECT * FROM `drug` WHERE `drug_c_w`=#{drug_c_w} AND (`common_name`=#{common_name} OR `pinyincode`=#{pinyincode});
     </select>
+    <insert id="insertPrescription" parameterType="cn.project.springbootcurrency.pojo.Patient" useGeneratedKeys="true" keyProperty="id">
+        insert into `prescription` values(0,#{id},0);
+    </insert>
+    <insert id="insertPrescription_drug" parameterType="int">
+        INSERT INTO `prescription_drug` VALUES(0,#{type},#{drug_id},#{prescription_id});
+    </insert>
 </mapper>
