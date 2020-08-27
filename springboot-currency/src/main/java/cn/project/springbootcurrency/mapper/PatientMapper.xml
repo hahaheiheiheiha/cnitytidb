@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.project.springbootcurrency.mapper.PatientMapper">
+    <select id="getPatientList" resultType="cn.project.springbootcurrency.pojo.Patient">
+        select * from patient
+        <where>
+
+            <if test="status_id!=0">
+                and status_id = #{status_id}
+            </if>
+            <if test="name!=null and name !=''">
+                and name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="type==1">
+                and date_format(creationtime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+            </if>
+            <if test="type==2">
+
+                    and  DATE_FORMAT(#{maxCreationtime},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+
+
+                    and DATE_FORMAT(#{minCreationtime},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+
+            </if>
+        </where>
+        <if test="page>0 and pagesize>0">
+            limit #{page},#{pagesize}
+        </if>
+    </select>
+    <select id="getGuaHaoByDate" resultType="int">
+        select count(*) from patient
+        <where>
+            <if test="status ==1">
+                <if test="type==1">
+                    and date_format(creationtime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+                </if>
+                <if test="type==2">
+                    and DATE_FORMAT(`creationtime`,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(now(),INTERVAL 1 DAY),'%Y-%m-%d')
+                </if>
+            </if>
+            <if test="status==2">
+                <if test="type==1">
+                    and date_format(updatetime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+                </if>
+                <if test="type==2">
+                    and DATE_FORMAT(`updatetime`,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(now(),INTERVAL 1 DAY),'%Y-%m-%d')
+                </if>
+            </if>
+        </where>
+
+    </select>
+    <resultMap id="patientMap" type="cn.project.springbootcurrency.pojo.Patient">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="sex" property="sex"></result>
+        <result column="age" property="age"></result>
+        <result column="birth" property="birth"></result>
+        <result column="cardnumber" property="cardnumber"></result>
+        <result column="phone" property="phone"></result>
+        <result column="identity" property="identity"></result>
+        <result column="patients_id" property="patients_id"></result>
+        <result column="vip_id" property="vip_id"></result>
+        <result column="nation" property="nation"></result>
+        <result column="marital_id" property="marital_id"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
+        <result column="address" property="address"></result>
+        <result column="education_id" property="education_id"></result>
+        <result column="occupation_id" property="occupation_id"></result>
+        <result column="workunit" property="workunit"></result>
+        <result column="remarks" property="remarks"></result>
+        <collection property="familieList" ofType="cn.project.springbootcurrency.pojo.Family">
+            <id column="fid" property="id"></id>
+            <result column="fname" property="name"></result>
+            <result column="fage" property="age"></result>
+            <result column="fsex" property="sex"></result>
+            <result column="fbirth" property="birth"></result>
+            <result column="fphone" property="phone"></result>
+            <result column="family_relations" property="family_relations"></result>
+            <result column="fcreateDate" property="createDate"></result>
+            <result column="fcreatedBy" property="createdBy"></result>
+        </collection>
+    </resultMap>
+    <select id="getPatientById" resultMap="patientMap">
+        select p.*,f.id fid,f.name fname,f.age fage,f.sex fsex,f.birth fbirth,f.phone fphone,
+        f.family_relations,f.createDate fcreateDate,f.createdBy fcreatedBy
+         from patient p,family f where p.id=#{id} and f.id in (select f_id from patient_family pf where p_id = #{id})
+    </select>
+    <resultMap id="patientOrderMap" type="cn.project.springbootcurrency.pojo.Patient">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <collection property="orderList" ofType="cn.project.springbootcurrency.pojo.Order">
+            <id column="oid" property="id"></id>
+            <result column="order_state" property="order_state"></result>
+            <result column="order_type" property="order_type"></result>
+            <result column="count_price" property="count_price"></result>
+            <result column="real_price" property="real_price"></result>
+            <result column="zhifufangshi" property="zhifufangshi"></result>
+            <result column="date_of_charge" property="date_of_charge"></result>
+        </collection>
+    </resultMap>
+    <select id="getPatientOrderById" resultMap="patientOrderMap">
+         SELECT p.id id, p.name name,o.id oid,o.order_state order_state,o.order_type order_type,o.count_price count_price
+         ,o.real_price real_price,o.zhifufangshi zhifufangshi,o.date_of_charge date_of_charge
+          FROM patient p ,`order` o WHERE p.id = 1 AND o.name_id =p.id
+    </select>
+    <insert id="addPatient" parameterType="cn.project.springbootcurrency.vo.PatientVO" useGeneratedKeys="true" keyProperty="id">
+        insert into patient(name,cardnumber,age,sex,phone,identity,province,city,address,remarks,guadandanhao,department_id
+        ,jiezhenleixing,jiezhenyishen_id,creationtime,updatetime,doctor_id,guahaoleixing,zhenliaofei,birth)
+        value(#{name},#{cardnumber},#{age},#{sex},#{phone},#{identity},#{province},#{city},
+        #{address},#{remarks},#{guadandanhao},#{department_id},#{jiezhenleixing},#{jiezhenyishen_id}
+        ,now(),now(),#{doctor_id},#{guahaoleixing},#{zhenliaofei},#{birth})
+    </insert>
+    <select id="getPatientByIdentity" resultType="int">
+        select count(*) from patient where identity = #{identity} and status_id !=10
+    </select>
+    <update id="updatePatientVipByV_Id">
+        update patient set vip_id = #{v_id} where id = #{id}
+    </update>
+    <select id="getPatientListVoByPatientsVo" resultType="cn.project.springbootcurrency.vo.PatientListVO">
+        SELECT p.name `name` ,p.id `id` ,p.guadandanhao `guadandanhao` ,p.age `age` ,p.sex `sex` ,
+        p.phone `phone` ,p.department_id `department_id` ,p.jiezhenyishen_id `user_id` ,p.creationtime `creationtime` ,p.status_id `status_id` ,
+        (SELECT SUM(count_price) FROM `order` o WHERE p.id = o.name_id ) count_price
+        ,(SELECT SUM(real_price) FROM `order` o WHERE p.id = o.name_id ) real_price FROM patient p
+        <where>
+            status_id = #{status_id}
+            <if test="department_id!=0">
+                and department_id =#{department_id}
+            </if>
+            <if test="user_id!=0">
+                and jiezhenyishen_id=#{user_id}
+            </if>
+            and  DATE_FORMAT(#{maxCreateDate},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+            and DATE_FORMAT(#{minCreateDate},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+            <if test="name!='' and name!=null">
+                and name like concat("%",#{name},"%")
+            </if>
+
+        </where>
+        order by id desc
+        <if test="page>0 and pagesize>0">
+            limit #{page},#{pagesize}
+        </if>
+    </select>
+</mapper>
