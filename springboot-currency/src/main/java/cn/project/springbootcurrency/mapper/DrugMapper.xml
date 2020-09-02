@@ -21,4 +21,43 @@
     <insert id="insertPrescription_drug" parameterType="int">
         INSERT INTO `prescription_drug` VALUES(0,#{type},#{drug_id},#{prescription_id});
     </insert>
+    <update id="updateDrugById" parameterType="int">
+        UPDATE `drug` SET `salesVolumes`=`salesVolumes`+1 WHERE id=#{id};
+    </update>
+    <select id="getPatientAndVip" resultType="cn.project.springbootcurrency.pojo.Patient">
+        SELECT p.*,v.name vname,pv.balance balance,pv.integral integral FROM `patient` p,`vip` v,`patient_vip` pv
+        WHERE p.`vip_id`=v.id AND p.id=pv.p_id AND p.id=#{patientId}
+    </select>
+    <select id="getPatient" resultType="cn.project.springbootcurrency.pojo.Patient">
+        SELECT * FROM `patient`;
+    </select>
+    <select id="getDrugDescSalesVolumes" resultType="cn.project.springbootcurrency.pojo.Drug">
+        SELECT * FROM `drug` ORDER BY `salesVolumes` DESC;
+    </select>
+    <select id="getDrugByDrug_c_wAndIdAndCommon_name" resultType="cn.project.springbootcurrency.pojo.Drug">
+        SELECT * FROM `drug` WHERE `drug_c_w`=#{drug_c_w} AND (`id`=#{id} OR `common_name`=#{common_name});
+    </select>
+    <select id="getUserById" resultType="cn.project.springbootcurrency.pojo.User">
+        SELECT * FROM `user` WHERE id IN (SELECT u_id FROM `user_role` WHERE r_id IN (1,2,3,4));
+    </select>
+    <select id="getDrug" resultType="cn.project.springbootcurrency.pojo.Drug">
+        SELECT d.*,s.name sname FROM `drug` d,`supplier` s WHERE d.`manufactor`=s.id AND d.`drug_c_w`=#{drug_c_w} AND d.`state`=#{state}
+        AND d.`CreationTime`&gt;=#{CreationTime1} AND d.`CreationTime` &lt;=#{CreationTime2}
+        AND (d.`common_name`=#{common_name} OR d.`id`=#{id} OR s.name=#{sname}) LIMIT #{page},#{pageSize};
+    </select>
+    <insert id="insertDrug" parameterType="cn.project.springbootcurrency.pojo.Drug">
+        INSERT INTO `drug` VALUES(0,#{barcode},#{common_name},#{pinyincode},#{classification},#{specifications},#{dosageform},#{otc},#{state},
+        #{invoice},#{approval_number},#{manufactor},#{packing_company},#{coefficient},#{company},#{dose},#{dose_company},#{purchase_price},#{retail_price},#{sell_piece_by_piece},
+        #{member_discount},#{usage},#{consumption},#{frequency},#{days},#{total},#{total_company},#{minstock},#{maxstock},#{location_number},
+        #{validity_warning},#{drug_description},#{remarks},#{drug_c_w},0,#{CreationTime});
+    </insert>
+    <update id="updateDrug" parameterType="cn.project.springbootcurrency.pojo.Drug">
+        UPDATE `drug` SET `barcode`=#{barcode},`common_name`=#{common_name},`pinyincode`=#{pinyincode},`classification`=#{classification},`specifications`=#{specifications},`dosageform`=#{dosageform},`otc`=#{otc},`state`=#{state},
+        `invoice`=#{invoice},`approval_number`=#{approval_number},`manufactor`=#{manufactor},`packing_company`=#{packing_company},`coefficient`=#{coefficient},`company`=#{company},`dose`=#{dose},`dose_company`=#{dose_company},`purchase_price`=#{purchase_price},`retail_price`=#{retail_price},
+        `sell_piece_by_piece`=#{sell_piece_by_piece},`member_discount`=#{member_discount},`usage`=#{usage},`consumption`=#{consumption},`frequency`=#{frequency},`days`=#{days},`total`=#{total},`total_company`=#{total_company},`minstock`=#{minstock},`maxstock`=#{maxstock},
+        `location_number`=#{location_number},`validity_warning`=#{validity_warning},`drug_description`=#{drug_description},`remarks`=#{remarks} WHERE `id`=#{id};
+    </update>
+    <update id="updateDrug_state" parameterType="int">
+        UPDATE `drug` SET `state`=#{state} WHERE id=#{id};
+    </update>
 </mapper>

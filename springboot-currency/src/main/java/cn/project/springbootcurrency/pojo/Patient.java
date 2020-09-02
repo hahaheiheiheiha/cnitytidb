@@ -40,6 +40,33 @@ public class Patient implements java.io.Serializable {
     private int zhenliaofei;
     private char sex;
     private int yibaoka;
+    private String vname;
+    private int balance;
+    private int integral;
+
+    public String getVname() {
+        return vname;
+    }
+
+    public void setVname(String vname) {
+        this.vname = vname;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public int getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(int integral) {
+        this.integral = integral;
+    }
 
     public int getYibaoka() {
         return yibaoka;

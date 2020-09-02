@@ -1,6 +1,7 @@
 package cn.project.springbootcurrency.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Drug implements Serializable {
     private int id;
@@ -37,6 +38,24 @@ public class Drug implements Serializable {
     private String remarks;
     private float purchase_price;
     private float retail_price;
+    private String sname;
+    private Date CreationTime;
+
+    public Date getCreationTime() {
+        return CreationTime;
+    }
+
+    public void setCreationTime(Date creationTime) {
+        CreationTime = creationTime;
+    }
+
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
 
     public int getId() {
         return id;

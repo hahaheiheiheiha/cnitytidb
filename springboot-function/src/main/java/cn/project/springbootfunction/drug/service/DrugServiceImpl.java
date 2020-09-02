@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,5 +45,55 @@ public class DrugServiceImpl implements DrugService{
     @Override
     public int insertPrescription_drug(int type, int drug_id, int prescription_id) {
         return drugMapper.insertPrescription_drug(type,drug_id,prescription_id);
+    }
+
+    @Override
+    public int updateDrugById(int id) {
+        return drugMapper.updateDrugById(id);
+    }
+
+    @Override
+    public Patient getPatientAndVip(int patientId) {
+        return drugMapper.getPatientAndVip(patientId);
+    }
+
+    @Override
+    public List<Patient> getPatient() {
+        return drugMapper.getPatient();
+    }
+
+    @Override
+    public List<Drug> getDrugDescSalesVolumes() {
+        return drugMapper.getDrugDescSalesVolumes();
+    }
+
+    @Override
+    public List<Drug> getDrugByDrug_c_wAndIdAndCommon_name(int drug_c_w, int id, String common_name) {
+        return drugMapper.getDrugByDrug_c_wAndIdAndCommon_name(drug_c_w,id,common_name);
+    }
+
+    @Override
+    public List<User> getUserById() {
+        return drugMapper.getUserById();
+    }
+
+    @Override
+    public List<Drug> getDrug(int drug_c_w, int state, Date CreationTime1, Date CreationTime2, String common_name, String id, String sname, int page, int pageSize) {
+        return drugMapper.getDrug(drug_c_w,state,CreationTime1,CreationTime2,common_name,id,sname,page,pageSize);
+    }
+
+    @Override
+    public int insertDrug(Drug drug) {
+        return drugMapper.insertDrug(drug);
+    }
+
+    @Override
+    public int updateDrug(Drug drug) {
+        return drugMapper.updateDrug(drug);
+    }
+
+    @Override
+    public int updateDrug_state(int id, int state) {
+        return drugMapper.updateDrug_state(id,state);
     }
 }
