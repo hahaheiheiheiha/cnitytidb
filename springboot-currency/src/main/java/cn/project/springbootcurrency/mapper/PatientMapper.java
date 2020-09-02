@@ -1,9 +1,7 @@
 package cn.project.springbootcurrency.mapper;
 
 import cn.project.springbootcurrency.pojo.Patient;
-import cn.project.springbootcurrency.vo.PatientListVO;
-import cn.project.springbootcurrency.vo.PatientVO;
-import cn.project.springbootcurrency.vo.PatientsVO;
+import cn.project.springbootcurrency.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +25,6 @@ public interface PatientMapper {
     public int updatePatientVipByV_Id(@Param("v_id")int v_id,@Param("id") int id);
 
     public List<PatientListVO> getPatientListVoByPatientsVo(PatientsVO patientsVO);
+
+    public List<PatientVipListVo> getPatientVipListVoByPatientVipVo(PatientVipVo patientVipVo);
 }

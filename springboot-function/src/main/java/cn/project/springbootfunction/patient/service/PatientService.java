@@ -1,9 +1,7 @@
 package cn.project.springbootfunction.patient.service;
 
 import cn.project.springbootcurrency.pojo.Patient;
-import cn.project.springbootcurrency.vo.PatientListVO;
-import cn.project.springbootcurrency.vo.PatientVO;
-import cn.project.springbootcurrency.vo.PatientsVO;
+import cn.project.springbootcurrency.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +18,5 @@ public interface PatientService {
     public int getPatientByIdentity(String identity);
     public int updatePatientVipByV_Id(@Param("v_id")int v_id,@Param("id") int id);
     public List<PatientListVO> getPatientListVoByPatientsVo(PatientsVO patientsVO);
+    public List<PatientVipListVo> getPatientVipListVoByPatientVipVo(PatientVipVo patientVipVo);
 }

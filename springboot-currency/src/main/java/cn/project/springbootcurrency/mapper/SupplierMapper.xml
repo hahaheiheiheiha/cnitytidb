@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.project.springbootcurrency.mapper.SupplierMapper">
+    <select id="getSupplierList" resultType="cn.project.springbootcurrency.pojo.Supplier">
+        select * from supplier
+        <where>
+            <if test="name!=null and name != ''">
+                and name like CONCAT('%',#{name},'%')
+            </if>
+        </where>
+        limit #{page},#{pageSize}
+    </select>
+    <insert id="addSupplier" >
+        INSERT INTO supplier(`name`,`contacts`,`phone`,`remarks`,`creation_time`,`createdBy`,state)
+        values (#{name},#{contacts},#{phone},#{remarks},now(),#{createdBy},#{state})
+    </insert>
+    <delete id="delSupplierById">
+        delete from supplier where id = #{id}
+    </delete>
+</mapper>

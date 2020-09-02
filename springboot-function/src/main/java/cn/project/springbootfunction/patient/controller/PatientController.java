@@ -41,6 +41,26 @@ public class PatientController {
     private OrderService orderService;
     @Resource
     private LabelService labelService;
+    @RequestMapping("/selectPatientVipList")
+    @ApiOperation(value="根据条件查询患者基本信息列表",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "根据条件查询患者基本信息列表")
+    public ResponseData<Object> selectPatientVipList(
+            @ApiParam(value="条件查询",name="patientVipVo",required = true)
+            @RequestBody PatientVipVo patientVipVo
+    ){
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            List<PatientVipListVo> patientVipListVos = patientService.getPatientVipListVoByPatientVipVo(patientVipVo);
+            responseData.setStatus(200);
+            responseData.setMessage("查询成功！");
+            responseData.setData(patientVipListVos);
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
+    }
     @RequestMapping(value="/selectHuanZheXinXi")
     @ApiOperation(value="根据患者id查询患者详情信息",httpMethod = "GET",produces = "application/json",protocols = "HTTP",notes = "根据患者id查询患者详情信息")
     public ResponseData<Object> selectHuanZheXinXi(
@@ -125,7 +145,6 @@ public class PatientController {
                 }else{
                     int countByIdentity = patientService.getPatientByIdentity(patient.getIdentity());
                     if(countByIdentity>0){
-
                         responseData.setStatus(403);
                         responseData.setMessage("新增失败");
                         responseData.setData("已存在该患者信息！！");
@@ -143,7 +162,7 @@ public class PatientController {
                         int count2 =  patient_vipService.addPatientByPatient_id(patient_vip);
                         patientService.updatePatientVipByV_Id(patient_vip.getId(),patient.getId());
                         Order order = new Order();
-                        order.setOrder_state(0);
+                        order.setOrder_state(124);
                         order.setOrder_type(51);
                         order.setOrder_id(patient.getGuadandanhao());
                         order.setName_id(patient.getId());

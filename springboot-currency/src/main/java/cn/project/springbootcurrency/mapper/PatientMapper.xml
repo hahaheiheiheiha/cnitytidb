@@ -23,7 +23,7 @@
 
             </if>
         </where>
-        <if test="page>0 and pagesize>0">
+        <if test="page>=0 and pagesize>0">
             limit #{page},#{pagesize}
         </if>
     </select>
@@ -138,8 +138,30 @@
 
         </where>
         order by id desc
-        <if test="page>0 and pagesize>0">
+        <if test="page>=0 and pagesize>0">
             limit #{page},#{pagesize}
+        </if>
+    </select>
+    <select id="getPatientVipListVoByPatientVipVo" resultType="cn.project.springbootcurrency.vo.PatientVipListVo">
+        SELECT p.id id,p.name name,p.sex sex,p.age age,p.`phone` phone,v.`name` vip_name,p.`creationtime` createdDate,
+(SELECT NAME FROM USER u WHERE doctor_id = u.id) uName FROM patient p ,vip v ,patient_vip pv
+    <where>
+        p.id= pv.p_id AND pv.v_id =v.`id`
+        <if test="vipId!=0">
+            and v.id =#{vipId}
+        </if>
+        <if test="nameOrPhone!=null and nameOrPhone!=''">
+            and (p.name like CONCAT('%',#{nameOrPhone},'%') or p.phone like CONCAT('%',#{nameOrPhone},'%') )
+        </if>
+
+        and  DATE_FORMAT(#{maxCreatedDate},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+
+
+        and DATE_FORMAT(#{minCreatedDate},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+    </where>
+        order by id desc
+        <if test="page>=0 and pageSize>0">
+            limit #{page},#{pageSize}
         </if>
     </select>
 </mapper>

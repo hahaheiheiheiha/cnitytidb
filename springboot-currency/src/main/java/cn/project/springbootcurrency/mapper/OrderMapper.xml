@@ -29,4 +29,100 @@
         INSERT INTO `order`(order_state,order_type,order_id,name_id,department,doctor_id,count_price,discount,real_price,medical_insurance)
 VALUES(#{order_state},#{order_type},#{order_id},#{name_id},#{department},#{doctor_id},#{count_price},#{discount},#{real_price},#{medical_insurance})
     </insert>
+    <select id="getOrderListByOrderVo" resultType="cn.project.springbootcurrency.vo.OrderListVo">
+       SELECT o.id id,o.`order_id` order_id,p.name NAME,(SELECT NAME FROM `chinic_label_dic` l WHERE l.id= o.`order_type`) TYPE,
+p.sex sex,p.age age,p.phone phone,(SELECT NAME FROM `chinic_label_dic` l WHERE l.id= p.department_id) department ,(SELECT NAME FROM USER u WHERE u.id =p.`jiezhenyishen_id`) uName
+,p.`creationtime` creationtime,o.`real_price` real_price ,o.`zhifujine` zhifujine,(SELECT NAME FROM `chinic_label_dic` c WHERE c.id=o.`order_state`) state,(SELECT NAME FROM `chinic_label_dic` c WHERE c.id= o.`zhifufangshi`) zhifufangshi
+FROM `order` o,patient p
+    <where>
+        o.order_state = #{order_state}
+        and p.id = o.`name_id`
+        <if test="order_type!=0">
+            and o.order_type = #{order_type}
+        </if>
+        <if test="nameOrOrder_id!=null and nameOrOrder_id!=''">
+            AND (p.name LIKE CONCAT('%',#{nameOrOrder_id},'%') OR o.`order_id` LIKE CONCAT('%',#{nameOrOrder_id},'%'))
+        </if>
+        and  DATE_FORMAT(#{maxCreateDate},'%Y-%m-%d')  &gt;= date_format(p.`creationtime`,'%Y-%m-%d')
+
+
+        and DATE_FORMAT(#{minCreateDate},'%Y-%m-%d')  &lt;= date_format(p.`creationtime`,'%Y-%m-%d')
+
+    </where>
+    order by o.order_id desc
+    <if test="page>=0 and pageSize>0">
+        limit #{page},#{pageSize}
+    </if>
+    </select>
+    <resultMap id="orderLists" type="cn.project.springbootcurrency.vo.OrderListsVo">
+        <result column="ySPrice" property="ySPrice"/>
+        <result column="yHPrice" property="yHPrice"/>
+        <result column="sJPrice" property="sJPrice"/>
+        <result column="countPrice" property="countPrice"/>
+        <result column="yiBao" property="yiBao"/>
+        <result column="yHK" property="yHK"/>
+        <result column="weiXin" property="weiXin"/>
+        <result column="zhiFuBao" property="zhiFuBao"/>
+        <result column="xianJing" property="xianJing"/>
+        <result column="huiYuan" property="huiYuan"/>
+        <collection property="orderListSsVoList" ofType="cn.project.springbootcurrency.vo.OrderListSsVo">
+            <id column="id" property="id"></id>
+            <result column="order_state" property="order_state"/>
+            <result column="order_type" property="order_type"/>
+            <result column="order_id" property="order_id"/>
+            <result column="name" property="name"/>
+            <result column="department" property="department"/>
+            <result column="uName" property="uName"/>
+            <result column="count_price" property="count_price"/>
+            <result column="discount" property="discount"/>
+            <result column="real_price" property="real_price"/>
+            <result column="medical_insurance" property="medical_insurance"/>
+            <result column="date_of_charge" property="date_of_charge"/>
+            <result column="toll_collector" property="toll_collector"/>
+            <result column="xianJin" property="xianJin"/>
+            <result column="vipPrice" property="vipPrice"/>
+            <result column="zhiFuBao" property="zhiFuBao"/>
+            <result column="zhifujine" property="zhifujine"/>
+            <result column="weiXin" property="weiXin"/>
+            <result column="yHK" property="yHK"/>
+        </collection>
+    </resultMap>
+    <select id="getOrderListsVo" resultMap="orderLists">
+       select (select sum(r.count_price) from `order` r) ySPrice,
+(SELECT SUM(r.discount) FROM `order` r) yHPrice,
+(SELECT SUM(r.real_price) FROM `order` r) sJPrice,
+(SELECT SUM(r.real_price) FROM `order` r) countPrice,(SELECT SUM(r.medical_insurance) FROM `order` r) yiBao,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where  r.zhifufangshi = c.id and r.zhifufangshi = 107) weiXin,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where  r.zhifufangshi = c.id and r.zhifufangshi = 108) zhiFuBao,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where  r.zhifufangshi = c.id and r.zhifufangshi = 109) xianJing,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where r.zhifufangshi = c.id and r.zhifufangshi = 110) yHK,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where  r.zhifufangshi = c.id and r.zhifufangshi = 111) huiYuan,
+ o.id id,o.`order_id` order_id,p.name name,(SELECT NAME FROM `chinic_label_dic` l WHERE l.id= o.`order_type`) order_type,
+ p.sex sex,p.age age,p.phone phone,(SELECT NAME FROM `chinic_label_dic` l WHERE l.id= p.department_id) department ,
+ (SELECT NAME FROM USER u WHERE u.id =p.`jiezhenyishen_id`) uName,o.count_price count_price,o.medical_insurance medical_insurance
+,o.`real_price` real_price ,o.`zhifujine` zhifujine,(SELECT NAME FROM `chinic_label_dic` c WHERE c.id=o.`order_state`) order_state,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where r.id = o.id and r.zhifufangshi = c.id and r.zhifufangshi = 107 ) weiXin,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where r.id = o.id and r.zhifufangshi = c.id and r.zhifufangshi = 108) zhiFuBao,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where r.id = o.id and r.zhifufangshi = c.id and r.zhifufangshi = 109) xianJing,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where r.id = o.id and r.zhifufangshi = c.id and r.zhifufangshi = 110) yHK,
+(select Sum(r.zhifujine) from `order` r ,`chinic_label_dic` c where r.id = o.id and r.zhifufangshi = c.id and r.zhifufangshi = 111) vipPrice,
+o.date_of_charge date_of_charge,o.toll_collector toll_collector
+from `order` o ,patient p
+        <where>
+            o.name_id = p.id
+
+            <if test="nameOrOrder_id!=null and nameOrOrder_id!=''">
+                and (p.name like CONCAT('%',#{nameOrOrder_id},'%') or o.order_id like CONCAT('%',#{nameOrOrder_id},'%') )
+            </if>
+
+            and  DATE_FORMAT(#{maxCreateDate},'%Y-%m-%d')  &gt;= date_format(p.creationtime,'%Y-%m-%d')
+
+
+            and DATE_FORMAT(#{minCreateDate},'%Y-%m-%d')  &lt;= date_format(p.creationtime,'%Y-%m-%d')
+        </where>
+        order by id desc
+        <if test="page>=0 and pageSize>0">
+            limit #{page},#{pageSize}
+        </if>
+    </select>
 </mapper>

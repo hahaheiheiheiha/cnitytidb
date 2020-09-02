@@ -2,9 +2,7 @@ package cn.project.springbootfunction.patient.service;
 
 import cn.project.springbootcurrency.mapper.PatientMapper;
 import cn.project.springbootcurrency.pojo.Patient;
-import cn.project.springbootcurrency.vo.PatientListVO;
-import cn.project.springbootcurrency.vo.PatientVO;
-import cn.project.springbootcurrency.vo.PatientsVO;
+import cn.project.springbootcurrency.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +52,11 @@ public class PatientServiceImpl implements PatientService{
     @Override
     public List<PatientListVO> getPatientListVoByPatientsVo(PatientsVO patientsVO) {
         return patientMapper.getPatientListVoByPatientsVo(patientsVO);
+    }
+
+    @Override
+    public List<PatientVipListVo> getPatientVipListVoByPatientVipVo(PatientVipVo patientVipVo) {
+        return patientMapper.getPatientVipListVoByPatientVipVo(patientVipVo);
     }
 
 

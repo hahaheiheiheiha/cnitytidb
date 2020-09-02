@@ -4,5 +4,30 @@
     <select id="getVipByP_id" resultType="cn.project.springbootcurrency.pojo.Vip">
         select * from vip where id = (select v_id from patient_vip where p_id =#{p_id})
     </select>
+    <select id="getVipPatientListVoByVipPatientVo" resultType="cn.project.springbootcurrency.vo.VipPatientListVo">
+        SELECT p.id id ,p.cardnumber cardnumber,v.`name` vipName,v.`loven` loven,p.`name` NAME
+        ,p.phone phone,pv.`consumption` consumption,pv.balance balance,pv.stored_value stored_value,
+        pv.creationDate creationDate,pv.expire expire,pv.integral integral FROM vip v,patient p,patient_vip pv
+        <where>
+            p.id=pv.`p_id` AND pv.`v_id` = v.`id` AND pv.`v_id`!=1
+            <if test="vipId!=0">
+                and pv.v_id =#{vipId}
+            </if>
+            <if test="nameOrPhoneOrKaHao!=null and nameOrPhoneOrKaHao!=''">
+                and (p.name like CONCAT('%',#{nameOrPhoneOrKaHao},'%') or p.phone like CONCAT('%',#{nameOrPhoneOrKaHao},'%') or  cardnumber like CONCAT('%',#{nameOrPhoneOrKaHao},'%'))
+            </if>
 
+            and  DATE_FORMAT(#{maxCreatedDate},'%Y-%m-%d')  &gt;= date_format(creationDate,'%Y-%m-%d')
+
+
+            and DATE_FORMAT(#{minCreatedDate},'%Y-%m-%d')  &lt;= date_format(creationDate,'%Y-%m-%d')
+        </where>
+        order by cardnumber desc
+        <if test="page>=0 and pageSize>0">
+            limit #{page},#{pageSize}
+        </if>
+    </select>
+    <select id="getVipList" resultType="cn.project.springbootcurrency.vo.VipPatientListVo">
+        select * from vip limit #{page},#{pageSize}
+    </select>
 </mapper>

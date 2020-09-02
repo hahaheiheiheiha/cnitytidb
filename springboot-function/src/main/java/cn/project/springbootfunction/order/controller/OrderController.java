@@ -1,18 +1,62 @@
 package cn.project.springbootfunction.order.controller;
 
-import cn.project.springbootcurrency.vo.ResponseData;
-import cn.project.springbootcurrency.vo.Rise;
+import cn.project.springbootcurrency.vo.*;
 import cn.project.springbootfunction.order.service.OrderService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 public class OrderController {
     @Resource
     private OrderService orderService;
+    @RequestMapping(value = "/selectOrderListVo")
+    @ApiOperation(value = "/根据条件查询订单信息列表",httpMethod = "POST",protocols = "HTTP",produces = "applicaion/json",notes = "根据条件查询订单信息列表")
+    public ResponseData<Object> selectOrderListVo(
+            @ApiParam(value = "条件实体类",name="orderVo",required = true)
+            @RequestBody OrderVo orderVo
+            ){
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            List<OrderListVo> orderListVos = orderService.getOrderListByOrderVo(orderVo);
+            responseData.setStatus(200);
+            responseData.setMessage("查询成功");
+            responseData.setData(orderListVos);
+        }catch (Exception e){
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseData;
+    }
+    @RequestMapping("/selectOrderListsVo")
+    @ApiOperation(value = "查询总收入",httpMethod = "POST",produces = "application/json",protocols = "HTTP",notes = "查询总收入")
+    public ResponseData<Object> selectOrderListsVo(
+            @ApiParam(value = "实体类",name="ordersVo",required = true)
+            @RequestBody OrdersVo ordersVo
+    ){
+        ResponseData<Object> responseData = new ResponseData<>();
+        try{
+            List<OrderListsVo> orderListsVos = orderService.getOrderListsVo(ordersVo);
+            responseData.setStatus(200);
+            responseData.setMessage("查询成功");
+            responseData.setData(orderListsVos);
+        }catch (Exception e){
+            e.printStackTrace();
+            responseData.setStatus(500);
+            responseData.setMessage("出现异常");
+            responseData.setData(e.getMessage());
+        }
+        return  responseData;
+    }
     @RequestMapping(value="/selectUpShouQian")
     @ApiOperation(value="查询当天新增接诊人数",httpMethod = "GET",protocols = "HTTP",produces = "applicaion/json",notes = "根据当前时间查询就诊人数")
     public ResponseData<Object> selectUpJiuJen(){
