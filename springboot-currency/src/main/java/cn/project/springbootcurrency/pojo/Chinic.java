@@ -17,6 +17,11 @@ public class Chinic implements Serializable {
     private String introduce;
     private String email;
     private Date expire_time;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

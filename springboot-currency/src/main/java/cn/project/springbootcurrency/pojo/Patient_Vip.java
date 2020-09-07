@@ -14,6 +14,11 @@ public class Patient_Vip implements Serializable {
     private int createdBy;
     private Date  expire;
     private int integral;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

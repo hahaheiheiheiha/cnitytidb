@@ -15,4 +15,9 @@ public class AreaServiceImpl implements AreaService {
     public List<Area> getAreaListByParent(int parentId) {
         return areaMapper.getAreaListByParent(parentId);
     }
+
+    @Override
+    public int countGetAreaListByParent(int parent) {
+        return areaMapper.countGetAreaListByParent(parent);
+    }
 }

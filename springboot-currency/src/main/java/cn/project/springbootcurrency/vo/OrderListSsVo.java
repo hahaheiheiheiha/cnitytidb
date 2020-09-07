@@ -23,6 +23,11 @@ public class OrderListSsVo implements java.io.Serializable {
     private float zhiFuBao;
     private float weiXin;
     private float yHK;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public float getZhifujine() {
         return zhifujine;

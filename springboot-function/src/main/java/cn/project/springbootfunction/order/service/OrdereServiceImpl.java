@@ -35,4 +35,16 @@ public class OrdereServiceImpl implements OrderService {
     public List<OrderListsVo> getOrderListsVo(OrdersVo ordersVo) {
         return orderMapper.getOrderListsVo(ordersVo);
     }
+
+    @Override
+    public int countGetOrderListByOrderVo(OrderVo orderVo) {
+        return orderMapper.countGetOrderListByOrderVo(orderVo);
+    }
+
+    @Override
+    public int countGetOrderListsVo(OrdersVo ordersVo) {
+        return orderMapper.countGetOrderListsVo(ordersVo);
+    }
+
+
 }

@@ -4,5 +4,7 @@
     <select id="getAreaListByParent" resultType="cn.project.springbootcurrency.pojo.Area">
         select * from chinic_area_dic where parent = #{parent}
     </select>
-
+    <select id="countGetAreaListByParent" resultType="Integer">
+        select count(*) from chinic_area_dic where parent = #{parent}
+    </select>
 </mapper>

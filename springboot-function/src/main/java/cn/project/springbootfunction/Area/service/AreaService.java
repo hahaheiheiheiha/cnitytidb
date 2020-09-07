@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AreaService {
     public List<Area> getAreaListByParent(@Param("parentId") int parentId);
+    public int countGetAreaListByParent(@Param("parent") int parent);
 }

@@ -30,4 +30,24 @@
     <select id="getVipList" resultType="cn.project.springbootcurrency.vo.VipPatientListVo">
         select * from vip limit #{page},#{pageSize}
     </select>
+    <select id="countGetVipPatientListVoByVipPatientVo" resultType="Integer">
+        select count(*) from vip v,patient p,patient_vip pv
+        <where>
+            p.id=pv.`p_id` AND pv.`v_id` = v.`id` AND pv.`v_id`!=1
+            <if test="vipId!=0">
+                and pv.v_id =#{vipId}
+            </if>
+            <if test="nameOrPhoneOrKaHao!=null and nameOrPhoneOrKaHao!=''">
+                and (p.name like CONCAT('%',#{nameOrPhoneOrKaHao},'%') or p.phone like CONCAT('%',#{nameOrPhoneOrKaHao},'%') or  cardnumber like CONCAT('%',#{nameOrPhoneOrKaHao},'%'))
+            </if>
+
+            and  DATE_FORMAT(#{maxCreatedDate},'%Y-%m-%d')  &gt;= date_format(creationDate,'%Y-%m-%d')
+
+
+            and DATE_FORMAT(#{minCreatedDate},'%Y-%m-%d')  &lt;= date_format(creationDate,'%Y-%m-%d')
+        </where>
+    </select>
+    <select id="countGetVipList" resultType="Integer">
+        select count(*) from vip
+    </select>
 </mapper>

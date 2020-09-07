@@ -4,6 +4,11 @@ public class qwe {
     private int statuCode;//状态码
     private String message;//信息
     private Object data;//返回结果
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getStatuCode() {
         return statuCode;

@@ -19,4 +19,9 @@ public interface PatientService {
     public int updatePatientVipByV_Id(@Param("v_id")int v_id,@Param("id") int id);
     public List<PatientListVO> getPatientListVoByPatientsVo(PatientsVO patientsVO);
     public List<PatientVipListVo> getPatientVipListVoByPatientVipVo(PatientVipVo patientVipVo);
+    public int countGetPatientList(Map map);
+
+    public int countGetPatientListVoByPatientsVo(PatientsVO patientsVO);
+
+    public int countGetPatientVipListVoByPatientVipVo(PatientVipVo patientVipVo);
 }

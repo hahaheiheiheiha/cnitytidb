@@ -28,4 +28,14 @@ public class VipServiceImpl implements VipService {
     public List<Vip> getVipList(int page, int pageSize) {
         return vipMapper.getVipList(page,pageSize);
     }
+
+    @Override
+    public int countGetVipPatientListVoByVipPatientVo(VipPatientVo vipPatientVo) {
+        return vipMapper.countGetVipPatientListVoByVipPatientVo(vipPatientVo);
+    }
+
+    @Override
+    public int countGetVipList() {
+        return vipMapper.countGetVipList();
+    }
 }

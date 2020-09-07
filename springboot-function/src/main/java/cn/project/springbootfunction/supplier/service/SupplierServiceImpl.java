@@ -24,4 +24,9 @@ public class SupplierServiceImpl implements SupplierService{
     public int delSupplierById(int id) {
         return supplierMapper.delSupplierById(id);
     }
+
+    @Override
+    public int countGetSupplierList(String name) {
+        return supplierMapper.countGetSupplierList(name);
+    }
 }

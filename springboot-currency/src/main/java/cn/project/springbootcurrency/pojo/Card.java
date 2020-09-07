@@ -13,6 +13,11 @@ public class Card implements Serializable {
     private int transaction_mode;
     private Date trading_hours;
     private int operator_id;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

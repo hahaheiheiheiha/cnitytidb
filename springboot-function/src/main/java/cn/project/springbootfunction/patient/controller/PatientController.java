@@ -50,9 +50,13 @@ public class PatientController {
         ResponseData<Object> responseData = new ResponseData<>();
         try{
             List<PatientVipListVo> patientVipListVos = patientService.getPatientVipListVoByPatientVipVo(patientVipVo);
+            Map<String,Object> map = new HashMap<>();
+            map.put("data",patientVipListVos);
+            int count = patientService.countGetPatientVipListVoByPatientVipVo(patientVipVo);
+            map.put("count",count);
             responseData.setStatus(200);
             responseData.setMessage("查询成功！");
-            responseData.setData(patientVipListVos);
+            responseData.setData(map);
         }catch (Exception e){
             responseData.setStatus(500);
             responseData.setMessage("出现异常");
@@ -251,9 +255,13 @@ public class PatientController {
             map.put("status_id",statuss);
             map.put("type",2);
             List<Patient> patientList = patientService.getPatientList(map);
+            Map<String,Object> map2 = new HashMap<>();
+            map2.put("data",patientList);
+            int count = patientService.countGetPatientList(map);
+            map2.put("count",count);
             responseData.setStatus(200);
             responseData.setMessage("查询成功");
-            responseData.setData(patientList);
+            responseData.setData(map2);
         }catch (Exception e){
             responseData.setStatus(500);
             responseData.setMessage("出现异常");
@@ -272,9 +280,13 @@ public class PatientController {
         ResponseData<Object> responseData = new ResponseData<>();
         try{
             List<PatientListVO> patientListVOS = patientService.getPatientListVoByPatientsVo(patientsVO);
+            Map<String,Object> map = new HashMap<>();
+            int count = patientService.countGetPatientListVoByPatientsVo(patientsVO);
+            map.put("data",patientListVOS);
+            map.put("count",count);
             responseData.setStatus(200);
             responseData.setMessage("查询成功");
-            responseData.setData(patientListVOS);
+            responseData.setData(map);
         }catch (Exception e){
             responseData.setStatus(500);
             responseData.setMessage("出现异常");
@@ -304,9 +316,13 @@ public class PatientController {
            map.put("name","");
            map.put("type",1);
            List<Patient> patientList = patientService.getPatientList(map);
+           Map<String,Object> map2 = new HashMap<>();
+           map2.put("data",patientList);
+           int count = patientService.countGetPatientList(map);
+           map2.put("count",count);
            responseData.setStatus(200);
            responseData.setMessage("查询成功");
-           responseData.setData(patientList);
+           responseData.setData(map2);
        }catch (Exception e){
            responseData.setStatus(500);
            responseData.setMessage("出现异常");

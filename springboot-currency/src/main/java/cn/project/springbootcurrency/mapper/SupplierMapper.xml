@@ -17,4 +17,12 @@
     <delete id="delSupplierById">
         delete from supplier where id = #{id}
     </delete>
+    <select id="countGetSupplierList" resultType="Integer">
+        select count(*) from supplier
+        <where>
+            <if test="name!=null and name != ''">
+                and name like CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

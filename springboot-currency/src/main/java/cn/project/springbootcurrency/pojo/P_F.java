@@ -6,6 +6,11 @@ public class P_F implements Serializable {
     private int id;
     private int p_id;
     private int f_id;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

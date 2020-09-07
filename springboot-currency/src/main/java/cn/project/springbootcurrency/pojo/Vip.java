@@ -10,6 +10,11 @@ public class Vip implements Serializable {
     private int minintegral;
     private String remarks;
     private int state;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

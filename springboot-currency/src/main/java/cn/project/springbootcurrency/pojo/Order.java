@@ -21,6 +21,11 @@ public class Order implements Serializable {
     private int zhifufangshi;
     private float labelMapper;
     private float zhifujine;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public float getZhifujine() {
         return zhifujine;

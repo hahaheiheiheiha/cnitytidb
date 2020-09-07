@@ -40,6 +40,11 @@ public class Drug implements Serializable {
     private float retail_price;
     private String sname;
     private Date CreationTime;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public Date getCreationTime() {
         return CreationTime;

@@ -14,6 +14,11 @@ public class OrderListsVo implements java.io.Serializable{
     private float weiXin;
     private float yHK;
     private List<OrderListSsVo> orderListSsVoList;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public List<OrderListSsVo> getOrderListSsVoList() {
         return orderListSsVoList;

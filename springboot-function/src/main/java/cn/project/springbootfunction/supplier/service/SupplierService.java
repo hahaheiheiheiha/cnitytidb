@@ -9,4 +9,5 @@ public interface SupplierService {
     public List<Supplier> getSupplierList(@Param("name") String name, @Param("page") int page, @Param("pageSize") int pageSize);
     public int addSupplier(Supplier supplier);
     public int delSupplierById(@Param("id") int id);
+    public int countGetSupplierList(@Param("name") String name);
 }

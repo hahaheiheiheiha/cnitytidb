@@ -5,6 +5,11 @@ import java.io.Serializable;
 public class Role implements Serializable {
     private int id;
     private String role_name;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

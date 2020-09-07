@@ -16,4 +16,6 @@ public interface OrderMapper {
     public int addOrderByPatient(Order order);
     public List<OrderListVo> getOrderListByOrderVo(OrderVo orderVo);
     public List<OrderListsVo> getOrderListsVo(OrdersVo ordersVo);
+    public int countGetOrderListByOrderVo(OrderVo orderVo);
+    public int countGetOrderListsVo(OrdersVo ordersVo);
 }

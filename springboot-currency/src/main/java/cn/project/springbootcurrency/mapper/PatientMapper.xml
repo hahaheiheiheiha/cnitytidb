@@ -164,4 +164,62 @@
             limit #{page},#{pageSize}
         </if>
     </select>
+    <select id="countGetPatientList" resultType="Integer">
+        select count(*) patient
+        <where>
+
+            <if test="status_id!=0">
+                and status_id = #{status_id}
+            </if>
+            <if test="name!=null and name !=''">
+                and name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="type==1">
+                and date_format(creationtime,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+            </if>
+            <if test="type==2">
+
+                and  DATE_FORMAT(#{maxCreationtime},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+
+
+                and DATE_FORMAT(#{minCreationtime},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+
+            </if>
+        </where>
+    </select>
+    <select id="countGetPatientListVoByPatientsVo" resultType="Integer">
+        select count(*) from patient p
+        <where>
+            status_id = #{status_id}
+            <if test="department_id!=0">
+                and department_id =#{department_id}
+            </if>
+            <if test="user_id!=0">
+                and jiezhenyishen_id=#{user_id}
+            </if>
+            and  DATE_FORMAT(#{maxCreateDate},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+            and DATE_FORMAT(#{minCreateDate},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+            <if test="name!='' and name!=null">
+                and name like concat("%",#{name},"%")
+            </if>
+
+        </where>
+    </select>
+    <select id="countGetPatientVipListVoByPatientVipVo" resultType="Integer">
+        select count(*) FROM patient p ,vip v ,patient_vip pv
+        <where>
+            p.id= pv.p_id AND pv.v_id =v.`id`
+            <if test="vipId!=0">
+                and v.id =#{vipId}
+            </if>
+            <if test="nameOrPhone!=null and nameOrPhone!=''">
+                and (p.name like CONCAT('%',#{nameOrPhone},'%') or p.phone like CONCAT('%',#{nameOrPhone},'%') )
+            </if>
+
+            and  DATE_FORMAT(#{maxCreatedDate},'%Y-%m-%d')  &gt;= date_format(creationtime,'%Y-%m-%d')
+
+
+            and DATE_FORMAT(#{minCreatedDate},'%Y-%m-%d')  &lt;= date_format(creationtime,'%Y-%m-%d')
+        </where>
+    </select>
 </mapper>

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Api("vip管理控制器")
@@ -30,9 +32,13 @@ public class VipController {
         ResponseData<Object> responseData = new ResponseData<>();
         try{
             List<VipPatientListVo> vipPatientListVoList = vipService.getVipPatientListVoByVipPatientVo(vipPatientVo);
+            Map<String,Object> map = new HashMap<>();
+            int count = vipService.countGetVipPatientListVoByVipPatientVo(vipPatientVo);
+            map.put("data",vipPatientListVoList);
+            map.put("count",count);
             responseData.setStatus(200);
             responseData.setMessage("查询成功");
-            responseData.setData(vipPatientListVoList);
+            responseData.setData(map);
         }catch (Exception e){
             responseData.setStatus(500);
             responseData.setMessage("出现异常");
@@ -53,9 +59,13 @@ public class VipController {
        try{
            page = (page-1)*pageSize;
            List<Vip> vipPatientListVoList = vipService.getVipList(page,pageSize);
+           Map<String,Object> map = new HashMap<>();
+           int count = vipService.countGetVipList();
+           map.put("data",vipPatientListVoList);
+           map.put("count",count);
            responseData.setStatus(200);
            responseData.setMessage("查询成功");
-           responseData.setData(vipPatientListVoList);
+           responseData.setData(map);
        }catch (Exception e){
            e.printStackTrace();
            responseData.setStatus(500);

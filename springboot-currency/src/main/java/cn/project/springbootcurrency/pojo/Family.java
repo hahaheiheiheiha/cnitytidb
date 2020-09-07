@@ -13,6 +13,11 @@ public class Family implements Serializable {
     private int family_relations;
     private Date createDate;
     private int createdBy;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getFamily_relations() {
         return family_relations;

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Api(value = "供应商管理控制器")
@@ -33,9 +35,13 @@ public class SupplierController {
         try{
             page = (page-1)*pageSize;
             List<Supplier> supplierList = supplierService.getSupplierList(name,page,pageSize);
+            Map<String,Object> map = new HashMap<>();
+            map.put("data",supplierList);
+            int count = supplierService.countGetSupplierList(name);
+            map.put("count",count);
             responseData.setStatus(200);
             responseData.setMessage("查询成功");
-            responseData.setData(supplierList);
+            responseData.setData(map);
         }catch (Exception e){
             e.printStackTrace();
             responseData.setStatus(500);

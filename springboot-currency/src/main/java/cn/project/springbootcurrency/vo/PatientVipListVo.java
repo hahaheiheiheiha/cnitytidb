@@ -11,7 +11,11 @@ public class PatientVipListVo {
     private String vip_name;
     private Date createdDate;
     private String uName;
+    private int count;
 
+    public int getCount() {
+        return count;
+    }
     public int getId() {
         return id;
     }

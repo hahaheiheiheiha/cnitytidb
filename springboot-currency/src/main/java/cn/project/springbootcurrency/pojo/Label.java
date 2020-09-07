@@ -13,6 +13,11 @@ public class Label implements Serializable {
     private String description;
     private Date creationDate;
     private Date modifyDate;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

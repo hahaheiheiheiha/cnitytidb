@@ -15,7 +15,11 @@ public class PatientListVO implements java.io.Serializable{
     private float count_price;
     private float real_price;
     private int status_id;
+    private int count;
 
+    public int getCount() {
+        return count;
+    }
     public int getId() {
         return id;
     }

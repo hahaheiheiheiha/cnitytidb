@@ -9,4 +9,5 @@ import java.util.List;
 @Mapper
 public interface AreaMapper {
     public List<Area> getAreaListByParent(@Param("parent") int parent);
+    public int countGetAreaListByParent(@Param("parent") int parent);
 }

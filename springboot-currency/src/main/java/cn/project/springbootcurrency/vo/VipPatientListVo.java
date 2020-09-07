@@ -15,7 +15,11 @@ public class VipPatientListVo {
     private Date expire;
     private int integral;
     private String name;
+    private int count;
 
+    public int getCount() {
+        return count;
+    }
     public int getId() {
         return id;
     }

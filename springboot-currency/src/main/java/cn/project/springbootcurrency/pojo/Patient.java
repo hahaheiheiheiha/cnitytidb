@@ -43,6 +43,11 @@ public class Patient implements java.io.Serializable {
     private String vname;
     private int balance;
     private int integral;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public String getVname() {
         return vname;

@@ -5,6 +5,11 @@ public class Prescription_drug {
     private int type;
     private int drug_id;
     private int prescription_id;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

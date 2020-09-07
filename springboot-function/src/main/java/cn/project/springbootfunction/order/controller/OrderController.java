@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class OrderController {
@@ -26,9 +28,13 @@ public class OrderController {
         ResponseData<Object> responseData = new ResponseData<>();
         try{
             List<OrderListVo> orderListVos = orderService.getOrderListByOrderVo(orderVo);
+            int count = orderService.countGetOrderListByOrderVo(orderVo);
+            Map<String,Object> map = new HashMap<>();
+            map.put("data",orderListVos);
+            map.put("count",count);
             responseData.setStatus(200);
             responseData.setMessage("查询成功");
-            responseData.setData(orderListVos);
+            responseData.setData(map);
         }catch (Exception e){
             responseData.setStatus(500);
             responseData.setMessage("出现异常");
@@ -46,9 +52,13 @@ public class OrderController {
         ResponseData<Object> responseData = new ResponseData<>();
         try{
             List<OrderListsVo> orderListsVos = orderService.getOrderListsVo(ordersVo);
+            int count = orderService.countGetOrderListsVo(ordersVo);
+            Map<String,Object> map = new HashMap<>();
+            map.put("data",orderListsVos);
+            map.put("count",count);
             responseData.setStatus(200);
             responseData.setMessage("查询成功");
-            responseData.setData(orderListsVos);
+            responseData.setData(map);
         }catch (Exception e){
             e.printStackTrace();
             responseData.setStatus(500);

@@ -4,6 +4,11 @@ public class Prescription {
     private int id;
     private int patient_id;
     private int charge;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

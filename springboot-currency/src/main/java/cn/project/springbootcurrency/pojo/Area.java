@@ -10,6 +10,15 @@ public class Area implements Serializable {
     private int parent;
     private Date creationDate;
     private int createdBy;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public int getId() {
         return id;

@@ -5,6 +5,11 @@ public class Register {
     private String verification ;
     private String owner;
     private String name;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public String getPhone() {
         return phone;

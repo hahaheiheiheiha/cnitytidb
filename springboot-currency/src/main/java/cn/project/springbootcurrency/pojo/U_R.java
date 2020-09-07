@@ -6,6 +6,11 @@ public class U_R implements Serializable {
     private int id;
     private int u_id;
     private int r_id;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

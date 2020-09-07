@@ -18,6 +18,11 @@ public class User implements java.io.Serializable{
     private String img;
     private int roleId;//角色id，方便修改个人信息
     private String roleName;    //角色名称
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public String getRoleName() {
         return roleName;

@@ -125,4 +125,37 @@ from `order` o ,patient p
             limit #{page},#{pageSize}
         </if>
     </select>
+    <select id="countGetOrderListByOrderVo" resultType="Integer">
+        select count(*) from `order` o,patient p
+        <where>
+            o.order_state = #{order_state}
+            and p.id = o.`name_id`
+            <if test="order_type!=0">
+                and o.order_type = #{order_type}
+            </if>
+            <if test="nameOrOrder_id!=null and nameOrOrder_id!=''">
+                AND (p.name LIKE CONCAT('%',#{nameOrOrder_id},'%') OR o.`order_id` LIKE CONCAT('%',#{nameOrOrder_id},'%'))
+            </if>
+            and  DATE_FORMAT(#{maxCreateDate},'%Y-%m-%d')  &gt;= date_format(p.`creationtime`,'%Y-%m-%d')
+
+
+            and DATE_FORMAT(#{minCreateDate},'%Y-%m-%d')  &lt;= date_format(p.`creationtime`,'%Y-%m-%d')
+
+        </where>
+    </select>
+    <select id="countGetOrderListsVo" resultType="Integer">
+        select count(*) from `order` o ,patient p
+        <where>
+            o.name_id = p.id
+
+            <if test="nameOrOrder_id!=null and nameOrOrder_id!=''">
+                and (p.name like CONCAT('%',#{nameOrOrder_id},'%') or o.order_id like CONCAT('%',#{nameOrOrder_id},'%') )
+            </if>
+
+            and  DATE_FORMAT(#{maxCreateDate},'%Y-%m-%d')  &gt;= date_format(p.creationtime,'%Y-%m-%d')
+
+
+            and DATE_FORMAT(#{minCreateDate},'%Y-%m-%d')  &lt;= date_format(p.creationtime,'%Y-%m-%d')
+        </where>
+    </select>
 </mapper>

@@ -17,6 +17,11 @@ public class OrderListVo implements java.io.Serializable{
     private float zhifujine;
     private String state;
     private String zhifufangshi;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public String getZhifufangshi() {
         return zhifufangshi;

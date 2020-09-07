@@ -12,6 +12,11 @@ public class Supplier implements Serializable {
     private String createdBy;
     private int state;
     private Date creation_time;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
 
     public int getId() {
         return id;

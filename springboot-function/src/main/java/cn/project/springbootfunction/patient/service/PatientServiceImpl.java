@@ -59,5 +59,20 @@ public class PatientServiceImpl implements PatientService{
         return patientMapper.getPatientVipListVoByPatientVipVo(patientVipVo);
     }
 
+    @Override
+    public int countGetPatientList(Map map) {
+        return patientMapper.countGetPatientList(map);
+    }
+
+    @Override
+    public int countGetPatientListVoByPatientsVo(PatientsVO patientsVO) {
+        return patientMapper.countGetPatientListVoByPatientsVo(patientsVO);
+    }
+
+    @Override
+    public int countGetPatientVipListVoByPatientVipVo(PatientVipVo patientVipVo) {
+        return patientMapper.countGetPatientVipListVoByPatientVipVo(patientVipVo);
+    }
+
 
 }
